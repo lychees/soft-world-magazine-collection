@@ -13,7 +13,7 @@
 
 ## 在线阅读与下载
 
-- 站内提供 1988–1991 年（创刊初期）册目的在线阅读（重压缩版，GitHub Pages 同源加载）
+- 站内提供 82 册的在线阅读（重压缩版，GitHub Pages 同源加载）：1988–1994 年全部册目（追踪报道、特报及正刊第 0–69 期）及部分小册
 - 全部 229 册原版扫描 PDF 见 [Release · magazines](https://github.com/lychees/soft-world-magazine-collection/releases/tag/magazines)，文件名与 `data/issues.json` 中的 `id` 对应（`<id>.pdf`）
 
 ## 站点结构
@@ -25,7 +25,7 @@ about.html          关于与版权说明
 assets/             样式、脚本、本地化的 PDF.js
 data/issues.json    全部馆藏元数据（期号、日期、页数、体积、是否有阅读版）
 covers/<id>.jpg     封面缩略图（全部 229 册）
-pdfs/<id>.pdf       在线阅读版（1988–1991 册目）
+pdfs/<id>.pdf       在线阅读版（82 册：1988–1994 全部册目及部分小册）
 tools/              馆藏整理与生成脚本
 ```
 
