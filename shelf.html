@@ -32,7 +32,11 @@
   <section class="block">
     <h2 class="sec">我的书架</h2>
     <div class="prose">
-      <p style="color:var(--ink-soft); font-size:14px;">收藏保存在本浏览器中（localStorage），无需账号。在任意馆藏卡片上点 ♡ 即可加入书架。</p>
+      <p style="color:var(--ink-soft); font-size:14px;">收藏保存在本浏览器中（localStorage），无需账号。在任意馆藏卡片上点 ♡ 即可加入书架。
+        <a href="javascript:void(0)" id="export-favs">导出收藏</a> ·
+        <label for="import-favs" style="cursor:pointer; text-decoration:underline;">导入收藏</label>
+        <input type="file" id="import-favs" accept=".json" style="display:none">
+      </p>
     </div>
     <div id="shelf-list"></div>
   </section>
@@ -48,6 +52,7 @@
 
 <script src="assets/favs.js"></script>
 <script src="assets/collections.js"></script>
+<script src="assets/progress.js"></script>
 <script>
 (function () {
   function el(tag, cls, text) {
@@ -81,8 +86,10 @@
       var body = el("div", "body");
       body.appendChild(el("div", "t", f.title));
       body.appendChild(el("div", "m", f.date || ""));
+      var sp = window.Progress && window.Progress.load(f.col, f.id);
+      if (sp) body.appendChild(el("div", "m", "读至 P." + sp));
       var acts = el("div", "acts");
-      var r = el("a", "btn read", "阅读");
+      var r = el("a", "btn read", sp ? "继续 P." + sp : "阅读");
       r.href = col.reader(f.id);
       acts.appendChild(r);
       var rm = el("button", "btn dl", "移出");
@@ -100,7 +107,40 @@
     old.textContent = "";
     old.appendChild(grid);
   }
-  document.addEventListener("DOMContentLoaded", render);
+  document.addEventListener("DOMContentLoaded", function () {
+    render();
+    document.getElementById("export-favs").addEventListener("click", function () {
+      var data = JSON.stringify(window.Favs.list(), null, 1);
+      var blob = new Blob([data], { type: "application/json" });
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "soft-world-favs.json";
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+    document.getElementById("import-favs").addEventListener("change", function (e) {
+      var file = e.target.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function () {
+        try {
+          var favs = JSON.parse(reader.result);
+          var d = {};
+          (Array.isArray(favs) ? favs : []).forEach(function (f) {
+            if (f && f.col && f.id) {
+              d[f.col + "/" + f.id] = { col: f.col, id: f.id, title: f.title || f.id, date: f.date || "", t: f.t || Date.now() };
+            }
+          });
+          localStorage.setItem("sw_favs_v1", JSON.stringify(d));
+          render();
+        } catch (err) {
+          alert("导入失败：文件格式不正确。");
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = "";
+    });
+  });
 })();
 </script>
 <script src="assets/sw-register.js"></script>

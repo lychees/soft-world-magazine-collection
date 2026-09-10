@@ -18,6 +18,7 @@
   ];
 
   var loaded = null;
+  var activeCol = "全部";
 
   function ensureData() {
     if (loaded) return loaded;
@@ -41,6 +42,7 @@
     q = q.trim().toLowerCase();
     var out = [];
     COLS.forEach(function (c) {
+      if (activeCol !== "全部" && c.label !== activeCol) return;
       (c.items || []).forEach(function (it) {
         var key = (it.title + " " + it.id + " " + (it.date || "") + " " + (it.issue != null ? it.issue : "")).toLowerCase();
         if (key.indexOf(q) >= 0) out.push({ c: c, it: it });
@@ -86,6 +88,37 @@
     var input = document.getElementById("gsearch");
     var box = document.getElementById("gsearch-results");
     if (!input || !box) return;
+    var rnd = document.getElementById("random-issue");
+    if (rnd) {
+      rnd.addEventListener("click", function () {
+        ensureData().then(function () {
+          var all = [];
+          COLS.forEach(function (c) {
+            (c.items || []).forEach(function (it) { all.push({ c: c, it: it }); });
+          });
+          if (!all.length) return;
+          var r = all[Math.floor(Math.random() * all.length)];
+          location.href = r.c.reader(r.it.id);
+        });
+      });
+    }
+    // 馆藏筛选 chips
+    var bar = document.getElementById("gsearch-cols");
+    if (bar) {
+      ["全部"].concat(COLS.map(function (c) { return c.label; })).forEach(function (label) {
+        var chip = el("span", "chip" + (label === activeCol ? " on" : ""), label);
+        chip.addEventListener("click", function () {
+          activeCol = label;
+          bar.querySelectorAll(".chip").forEach(function (x) { x.classList.remove("on"); });
+          chip.classList.add("on");
+          if (input.value.trim()) {
+            box.textContent = "检索中……";
+            ensureData().then(function () { renderResults(box, input.value); });
+          }
+        });
+        bar.appendChild(chip);
+      });
+    }
     var timer = null;
     input.addEventListener("input", function () {
       clearTimeout(timer);

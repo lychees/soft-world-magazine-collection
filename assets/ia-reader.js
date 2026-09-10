@@ -220,6 +220,7 @@
     $("ia").href = col.iaPage;
 
     var id = q.get("id") || "";
+    var startFromQuery = parseInt(q.get("page") || "0", 10) || null;
     fetch(col.data).then(function (r) { return r.json(); }).then(function (data) {
       item = data.find(function (x) { return x.id === id; }) || data[0];
       pageCount = item.pages || 0;
@@ -232,7 +233,13 @@
         status("该册缺少页面索引，请下载原版阅读。");
         return;
       }
-      var startPage = (window.Progress && id) ? window.Progress.load(colKey, id) : null;
+      var startPage = startFromQuery || ((window.Progress && id) ? window.Progress.load(colKey, id) : null);
+      var savedZoom = (window.Zoom && id) ? window.Zoom.load(colKey, id) : null;
+      if (savedZoom) {
+        fit = savedZoom;
+        $("zoom").textContent = fit === "width" ? "适应宽度" : "原始尺寸";
+        document.body.classList.toggle("zoom-full", fit === "full");
+      }
       show(startPage && startPage > 1 ? startPage : 1);
     }).catch(function (e) {
       status("数据加载失败：" + e);
@@ -248,11 +255,23 @@
       fit = fit === "width" ? "full" : "width";
       $("zoom").textContent = fit === "width" ? "适应宽度" : "原始尺寸";
       document.body.classList.toggle("zoom-full", fit === "full");
+      if (window.Zoom) window.Zoom.save(colKey, item.id, fit);
     });
     $("mode").addEventListener("click", function () { setMode(!spread); });
     $("fs").addEventListener("click", function () {
       if (document.fullscreenElement) document.exitFullscreen();
       else $("rd-stage").requestFullscreen().catch(function () {});
+    });
+    $("share").addEventListener("click", function () {
+      var u = new URL(location.href);
+      u.searchParams.set("page", spread ? pairPages(pairIdx)[0] : pageNum);
+      var text = u.toString();
+      function done() { $("share").textContent = "已复制"; setTimeout(function () { $("share").textContent = "分享"; }, 1500); }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () { prompt("复制链接：", text); });
+      } else {
+        prompt("复制链接：", text);
+      }
     });
     document.addEventListener("keydown", function (e) {
       if (e.target.tagName === "INPUT") return;

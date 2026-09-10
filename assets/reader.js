@@ -393,21 +393,30 @@
     iaImg.addEventListener("click", function () { go(1); });
 
     var id = new URLSearchParams(location.search).get("id") || "";
+    var startFromQuery = parseInt(new URLSearchParams(location.search).get("page") || "0", 10) || null;
     fetch("data/issues.json").then(function (r) { return r.json(); }).then(function (data) {
       var it = data.find(function (x) { return x.id === id; }) || data[0];
       item = it;
+      if (window.Zoom && id) {
+        var savedZoom = window.Zoom.load("sw", id);
+        if (savedZoom) {
+          zoomMode = savedZoom;
+          $("zoom").value = savedZoom;
+        }
+      }
       $("rtitle").textContent = it.title + (it.date ? "（" + it.date + "）" : "");
       document.title = it.title + " · 《軟體世界》杂志文献资料库";
       $("dl").href = DL_BASE + it.id + ".pdf";
+      if (startFromQuery) it._startPage = startFromQuery;
       if (it.reading) {
-        var sp = (window.Progress && id) ? window.Progress.load("sw", id) : null;
+        var sp = (window.Progress && id && !startFromQuery) ? window.Progress.load("sw", id) : null;
         if (sp && sp > 1) {
           it._startPage = sp;
         }
         startPdf(it);
       }
       else if (it.ia_path) {
-        var sp2 = (window.Progress && id) ? window.Progress.load("sw", id) : null;
+        var sp2 = (window.Progress && id && !startFromQuery) ? window.Progress.load("sw", id) : null;
         if (sp2 && sp2 > 1) it._startPage = sp2;
         startIa(it);
       }
@@ -420,6 +429,17 @@
     $("fs").addEventListener("click", function () {
       if (document.fullscreenElement) document.exitFullscreen();
       else stage.requestFullscreen().catch(function () {});
+    });
+    $("share").addEventListener("click", function () {
+      var u = new URL(location.href);
+      u.searchParams.set("page", spread ? pairPages(pairIdx)[0] : pageNum);
+      var text = u.toString();
+      function done() { $("share").textContent = "已复制"; setTimeout(function () { $("share").textContent = "分享"; }, 1500); }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () { prompt("复制链接：", text); });
+      } else {
+        prompt("复制链接：", text);
+      }
     });
     $("rd-canvas-r").addEventListener("click", function () { go(1); });
     $("rd-canvas-l").addEventListener("click", function () { go(-1); });
@@ -437,6 +457,7 @@
     });
     $("zoom").addEventListener("change", function () {
       zoomMode = $("zoom").value;
+      if (window.Zoom) window.Zoom.save("sw", item.id, zoomMode);
       if (spread) {
         if (mode === "ia") { /* 图片按 CSS 自适应 */ } else renderPair(pairIdx);
       } else if (mode === "ia") iaLayout(); else if (pdf) renderPdf(pageNum);
