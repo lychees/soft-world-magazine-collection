@@ -141,7 +141,125 @@
     });
   }
 
-  /* ================= IA 图片模式 ================= */
+  /* ================= 双页对开 ================= */
+  var spread = false, pairIdx = 0;
+
+  function maxPair() { return Math.max(0, Math.floor(pageCount / 2)); }
+  function pairPages(k) {
+    if (k <= 0) return [1];
+    var a = 2 * k, b = 2 * k + 1;
+    return b <= pageCount ? [a, b] : [a];
+  }
+  function pairOfPage(n) { return n <= 1 ? 0 : Math.floor(n / 2); }
+
+  function renderPair(k) {
+    if (!pdf) return;
+    if (rendering) { pendingPair = k; return; }
+    rendering = true;
+    var pages = pairPages(k);
+    Promise.all(pages.map(function (n) { return pdf.getPage(n); })).then(function (pgs) {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var bases = pgs.map(function (page) { return page.getViewport({ scale: 1 }); });
+      var totalW = bases.reduce(function (s, v) { return s + v.width; }, 0);
+      var maxH = Math.max.apply(null, bases.map(function (v) { return v.height; }));
+      var scale;
+      if (zoomMode === "width") scale = (stage.clientWidth - 34) / totalW;
+      else if (zoomMode === "page") scale = Math.min((stage.clientWidth - 34) / totalW, (stage.clientHeight - 28) / maxH);
+      else scale = parseFloat(zoomMode);
+      var els = [$("rd-canvas-l"), $("rd-canvas-r")];
+      var tasks = [];
+      pgs.forEach(function (page, i) {
+        var vp = page.getViewport({ scale: scale * dpr });
+        var c = els[i];
+        c.width = Math.floor(vp.width);
+        c.height = Math.floor(vp.height);
+        c.style.width = Math.floor(vp.width / dpr) + "px";
+        c.style.height = Math.floor(vp.height / dpr) + "px";
+        tasks.push(page.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise);
+      });
+      els[1].style.display = pgs.length > 1 ? "" : "none";
+      return Promise.all(tasks);
+    }).then(function () {
+      pairIdx = k;
+      $("pg").value = pairPages(k)[0];
+      ["rd-canvas-l", "rd-canvas-r"].forEach(function (id) {
+        var c = $(id);
+        c.classList.remove("flip-enter");
+        void c.offsetWidth;
+        c.classList.add("flip-enter");
+      });
+      rendering = false;
+      if (pendingPair != null) { var q = pendingPair; pendingPair = null; renderPair(q); }
+    }).catch(function (e) {
+      rendering = false;
+      status("页面渲染失败：" + e.message);
+    });
+  }
+  var pendingPair = null;
+
+  function showPairIa(k) {
+    pairIdx = k;
+    var pages = pairPages(k);
+    status("第 " + pages.join("·") + " 页加载中……");
+    var L = $("rd-img-l"), R = $("rd-img-r");
+    L.style.visibility = "hidden";
+    R.style.visibility = "hidden";
+    R.style.display = pages[1] ? "" : "none";
+    L.onload = function () { L.style.visibility = ""; hideStatus(); L.classList.add("flip-enter"); };
+    R.onload = function () { R.style.visibility = ""; hideStatus(); R.classList.add("flip-enter"); };
+    L.onerror = R.onerror = iaErr;
+    L.src = iaPageUrl(pages[0], iaVariant);
+    R.src = pages[1] ? iaPageUrl(pages[1], iaVariant) : "";
+    [pages[pages.length - 1] + 1, pages[pages.length - 1] + 2].forEach(function (x) {
+      if (x <= pageCount) { var p = new Image(); p.src = iaPageUrl(x, iaVariant); }
+    });
+    $("pg").value = pages[0];
+  }
+
+  function iaErr() {
+    if (iaVariant === "redirect") {
+      iaVariant = "node";
+      if (spread) showPairIa(pairIdx);
+      else { iaImg.dataset.tried = "node"; iaImg.src = iaPageUrl(pageNum, "node"); }
+      return;
+    }
+    status("第 " + pageNum + " 页加载失败，可尝试下一页或下载原版。");
+  }
+
+  function snapSpread(d) {
+    var el;
+    if (mode === "pdf") el = d === 1 ? $("rd-canvas-r") : $("rd-canvas-l");
+    else el = d === 1 ? $("rd-img-r") : $("rd-img-l");
+    if (!el || (el.style.display === "none")) return null;
+    if (mode === "pdf") {
+      if (!el.width) return null;
+      var im = new Image();
+      im.src = el.toDataURL("image/jpeg", 0.85);
+      im.style.width = el.style.width;
+      return im;
+    }
+    if (!el.naturalWidth || el.style.visibility === "hidden") return null;
+    var im2 = new Image();
+    im2.src = el.src;
+    im2.style.width = el.getBoundingClientRect().width + "px";
+    im2.style.height = "auto";
+    return im2;
+  }
+
+  function setMode(toSpread) {
+    spread = toSpread;
+    $("mode").textContent = toSpread ? "单页" : "双页";
+    if (mode === "pdf") {
+      canvas.style.display = toSpread ? "none" : "";
+      $("spread-box").style.display = toSpread ? "flex" : "none";
+      if (toSpread) renderPair(pairOfPage(pageNum)); else renderPdf(pageNum);
+    } else if (mode === "ia") {
+      iaImg.style.display = toSpread ? "none" : "";
+      $("spread-img-box").style.display = toSpread ? "flex" : "none";
+      if (toSpread) showPairIa(pairOfPage(pageNum)); else showIa(pageNum);
+    }
+  }
+
   var iaImg;
 
   function iaPageUrl(n, variant) {
@@ -194,6 +312,14 @@
   /* ================= 公共 ================= */
   function go(d) {
     if (mode !== "pdf" && mode !== "ia") return;
+    if (spread) {
+      var k = pairIdx + d;
+      if (k < 0 || k > maxPair()) return;
+      window.flipGo($("flip-wrap"), d, function () { return snapSpread(d); }, function () {
+        if (mode === "pdf") renderPair(k); else showPairIa(k);
+      }, d === 1 ? "right" : "left");
+      return;
+    }
     var n = pageNum + d;
     if (n < 1 || n > pageCount) return;
     window.flipGo($("flip-wrap"), d, snap, function () {
@@ -268,15 +394,26 @@
 
     $("prev").addEventListener("click", function () { go(-1); });
     $("next").addEventListener("click", function () { go(1); });
+    $("mode").addEventListener("click", function () { setMode(!spread); });
+    $("rd-canvas-r").addEventListener("click", function () { go(1); });
+    $("rd-canvas-l").addEventListener("click", function () { go(-1); });
+    $("rd-img-r").addEventListener("click", function () { go(1); });
+    $("rd-img-l").addEventListener("click", function () { go(-1); });
     $("pg").addEventListener("change", function () {
       var n = parseInt($("pg").value, 10);
       if (n >= 1 && n <= pageCount) {
-        if (mode === "ia") showIa(n); else renderPdf(n);
-      } else $("pg").value = pageNum;
+        if (spread) {
+          if (mode === "ia") showPairIa(pairOfPage(n)); else renderPair(pairOfPage(n));
+        } else {
+          if (mode === "ia") showIa(n); else renderPdf(n);
+        }
+      } else $("pg").value = spread ? pairPages(pairIdx)[0] : pageNum;
     });
     $("zoom").addEventListener("change", function () {
       zoomMode = $("zoom").value;
-      if (mode === "ia") iaLayout(); else if (pdf) renderPdf(pageNum);
+      if (spread) {
+        if (mode === "ia") { /* 图片按 CSS 自适应 */ } else renderPair(pairIdx);
+      } else if (mode === "ia") iaLayout(); else if (pdf) renderPdf(pageNum);
     });
     $("thumbs").addEventListener("click", function () {
       thumbsBox.classList.toggle("open");

@@ -19,14 +19,16 @@
     document.head.appendChild(st);
   }
 
-  /* snapshot: 返回代表当前页面的元素（img 或 canvas 副本），可为 null（首次加载不翻页） */
-  function pageFlip(wrap, dir, snapshotEl) {
+  /* snapshot: 返回代表当前页面的元素（img 或 canvas 副本），可为 null（首次加载不翻页）
+     sideOpt: 覆盖层停靠侧（默认 dir=1 左、dir=-1 右；双页模式需显式指定） */
+  function pageFlip(wrap, dir, snapshotEl, sideOpt) {
     ensureStyle();
     return new Promise(function (resolve) {
       if (!snapshotEl) { flipping = false; resolve(); return; }
       var ov = document.createElement("div");
       ov.className = "flip-overlay";
-      ov.style[dir === 1 ? "left" : "right"] = "0";
+      var side = sideOpt || (dir === 1 ? "left" : "right");
+      ov.style[side === "left" ? "left" : "right"] = "0";
       ov.style.transformOrigin = dir === 1 ? "left center" : "right center";
       ov.appendChild(snapshotEl);
       wrap.appendChild(ov);
@@ -56,18 +58,18 @@
   }
 
   /* 统一入口：执行翻页动画，同时在底层切换到新页。
-     dir=1/-1；snapshotFn() 取当前页快照元素；switchFn() 切换新页面内容。 */
-  window.flipGo = function (wrap, dir, snapshotFn, switchFn) {
+     dir=1/-1；snapshotFn() 取当前页快照元素；switchFn() 切换新页面内容；sideOpt 覆盖层停靠侧。 */
+  window.flipGo = function (wrap, dir, snapshotFn, switchFn, sideOpt) {
     if (flipping) { queued = dir; return Promise.resolve(); }
     if (!snapshotFn()) { switchFn(); return Promise.resolve(); }
     flipping = true;
-    var p = pageFlip(wrap, dir, snapshotFn());
+    var p = pageFlip(wrap, dir, snapshotFn(), sideOpt);
     switchFn();
     return p.then(function () {
       if (queued) {
         var q = queued;
         queued = 0;
-        return window.flipGo(wrap, q, snapshotFn, switchFn);
+        return window.flipGo(wrap, q, snapshotFn, switchFn, sideOpt);
       }
     });
   };

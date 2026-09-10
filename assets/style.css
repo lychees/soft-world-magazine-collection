@@ -190,6 +190,8 @@ h2.sec {
   padding: 22px 12px 60px; background: #4a463f;
 }
 .rd-stage canvas { background: #fff; box-shadow: 0 4px 24px rgba(0,0,0,.45); max-width: none; }
+#spread-box, #spread-img-box { display: flex; gap: 8px; align-items: flex-start; justify-content: center; }
+#spread-box canvas, #spread-img-box img { max-width: calc(50% - 4px); height: auto; }
 .rd-status { color: #d8cfbc; padding: 40px 0; text-align: center; }
 .rd-progress { width: 280px; height: 6px; background: #171512; border-radius: 4px; margin: 14px auto 0; overflow: hidden; }
 .rd-progress i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .2s; }
