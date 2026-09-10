@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>《电子游戏与电脑游戏》杂志文献资料 · 1996–2003 · 《軟體世界》杂志文献资料库</title>
+<meta name="description" content="《电子游戏与电脑游戏》（电电）杂志文献资料整理与在线阅读：1996–2003 年共 98 册，由 archive.org 提供文件托管。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="covers-diandian/dd-1996-07.jpg">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="title">軟體世界</span>
+      <span class="sub">杂志文献资料库</span>
+    </a>
+    <nav class="site-nav">
+      <a href="index.html">軟體世界</a>
+      <a href="popsoft.html">大众软件</a>
+      <a href="zjimi.html">掌机迷</a>
+      <a href="koudaimi.html">口袋迷</a>
+      <a href="index.html#collections">更多馆藏</a>
+      <a href="about.html">关于</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <h1>《电子游戏与电脑游戏》杂志文献资料</h1>
+    <p class="lead">
+      《电子游戏与电脑游戏》（电电）1996 年创刊，是《电子游戏软件》的姊妹刊，以攻略与游戏文化见长，
+      2003 年停刊。本站整理 archive.org 收藏的 1996–2003 年正刊（近全）及特辑共 <b>98 册</b>，
+      全部提供在线阅读，文件由 archive.org 托管。
+    </p>
+    <div class="stats">
+      <div class="stat"><b id="st-issues">–</b><span>馆藏册数</span></div>
+      <div class="stat"><b id="st-pages">–</b><span>总页数</span></div>
+      <div class="stat"><b id="st-size">–</b><span>文件体积</span></div>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section class="block">
+    <h2 class="sec">杂志简介</h2>
+    <div class="prose wiki-box">
+      <p>《电子游戏与电脑游戏》1996 年 7 月创刊，与《电子游戏软件》同属一家出版社，内容以游戏攻略、
+        剧情小说、玩家长评与海外游戏文化为主，文风深受核心玩家喜爱。2003 年停刊。</p>
+      <p class="attribution">
+        扫描文件托管于 <a href="https://archive.org/details/video_game_and_computer_game" target="_blank" rel="noopener">archive.org</a>；
+        杂志内容版权归原出版方所有，本站仅供学习研究使用。
+      </p>
+    </div>
+  </section>
+
+  <section class="block" id="catalog">
+    <h2 class="sec">馆藏目录</h2>
+    <div class="filterbar">
+      <input type="search" id="search" placeholder="搜索年月…">
+      <span class="chip on" data-type="全部">全部</span>
+      <span class="chip" data-type="正刊">正刊</span>
+      <span class="chip" data-type="特辑">特辑</span>
+    </div>
+    <div class="yearnav" id="yearnav"></div>
+    <div id="catalog-list"><p style="color:var(--ink-soft)">目录加载中……</p></div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p>《电子游戏与电脑游戏》杂志内容版权归原出版方所有，本站为民间收藏整理项目，仅供学习研究使用；扫描文件由 archive.org 托管。</p>
+    <p><a href="index.html">《軟體世界》馆藏</a> ·
+      <a href="https://github.com/lychees/soft-world-magazine-collection" target="_blank" rel="noopener">项目仓库</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+window.MAGCAT = {
+  iaId: "video_game_and_computer_game",
+  data: "data/diandian.json",
+  covers: "covers-diandian/",
+  readerCol: "diandian",
+  groupOf: function (it) {
+    if (it.type === "特辑") return { key: "zz-sp", title: "特辑", short: "特辑" };
+    var y = it.year || 0;
+    return { key: "y" + y, title: y + " 年", short: String(y) };
+  }
+};
+</script>
+<script src="assets/mag-catalog.js"></script>
+</body>
+</html>

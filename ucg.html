@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>《游戏机实用技术》杂志文献资料 · 2004–2019 · 《軟體世界》杂志文献资料库</title>
+<meta name="description" content="《游戏机实用技术》（UCG）杂志文献资料整理与在线阅读：2004–2019 年间 154 册，由 archive.org 提供文件托管。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="covers-ucg/ucg-265.jpg">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="title">軟體世界</span>
+      <span class="sub">杂志文献资料库</span>
+    </a>
+    <nav class="site-nav">
+      <a href="index.html">軟體世界</a>
+      <a href="popsoft.html">大众软件</a>
+      <a href="zjimi.html">掌机迷</a>
+      <a href="koudaimi.html">口袋迷</a>
+      <a href="index.html#collections">更多馆藏</a>
+      <a href="about.html">关于</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <h1>《游戏机实用技术》杂志文献资料</h1>
+    <p class="lead">
+      《游戏机实用技术》（UCG）1998 年创刊，半月刊，至今仍在发行，是国内最长寿的主机游戏杂志。
+      本站整理 archive.org 收藏的 2004–2019 年间共 <b>154 册</b>
+      （2004、2005、2009、2010、2011、2014、2017、2019 年），全部提供在线阅读，文件由 archive.org 托管。
+    </p>
+    <div class="stats">
+      <div class="stat"><b id="st-issues">–</b><span>馆藏册数</span></div>
+      <div class="stat"><b id="st-pages">–</b><span>总页数</span></div>
+      <div class="stat"><b id="st-size">–</b><span>文件体积</span></div>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section class="block">
+    <h2 class="sec">杂志简介</h2>
+    <div class="prose wiki-box">
+      <p>《游戏机实用技术》1998 年创刊，以主机游戏攻略、新作情报、硬件评测与游戏文化为核心，
+        半月刊发行至今，是中国主机游戏杂志的常青树，曾用英文名 Ultra Console Game（UCG）。</p>
+      <p class="attribution">
+        扫描文件托管于 archive.org（如 <a href="https://archive.org/details/UCG-2011" target="_blank" rel="noopener">UCG-2011</a> 等年份条目）；
+        杂志内容版权归原出版方所有，本站仅供学习研究使用。
+      </p>
+    </div>
+  </section>
+
+  <section class="block" id="catalog">
+    <h2 class="sec">馆藏目录</h2>
+    <div class="filterbar">
+      <input type="search" id="search" placeholder="搜索期号…">
+      <span class="chip on" data-type="全部">全部</span>
+      <span class="chip" data-type="正刊">正刊</span>
+    </div>
+    <div class="yearnav" id="yearnav"></div>
+    <div id="catalog-list"><p style="color:var(--ink-soft)">目录加载中……</p></div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p>《游戏机实用技术》杂志内容版权归原出版方所有，本站为民间收藏整理项目，仅供学习研究使用；扫描文件由 archive.org 托管。</p>
+    <p><a href="index.html">《軟體世界》馆藏</a> ·
+      <a href="https://github.com/lychees/soft-world-magazine-collection" target="_blank" rel="noopener">项目仓库</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+window.MAGCAT = {
+  iaId: "UCG-2011",
+  data: "data/ucg.json",
+  covers: "covers-ucg/",
+  readerCol: "ucg",
+  groupOf: function (it) {
+    var y = it.year || 0;
+    return { key: "y" + y, title: y + " 年", short: String(y) };
+  }
+};
+</script>
+<script src="assets/mag-catalog.js"></script>
+</body>
+</html>

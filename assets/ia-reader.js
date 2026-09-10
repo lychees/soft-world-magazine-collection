@@ -25,7 +25,21 @@
       node: "https://ia600500.us.archive.org/view_archive.php",
       dir: "/24/items/gamebooks_mhsg/",
       iaPage: "https://archive.org/details/gamebooks_mhsg"
-    }
+    },
+    dianruan: { label: "电子游戏软件", data: "data/dianruan.json", back: "dianruan.html",
+      iaPage: "https://archive.org/details/gamesoftware-magazine-1994-2001" },
+    diandian: { label: "电子游戏与电脑游戏", data: "data/diandian.json", back: "diandian.html",
+      iaPage: "https://archive.org/details/video_game_and_computer_game" },
+    jiayou: { label: "家用电脑与游戏机", data: "data/jiayou.json", back: "jiayou.html",
+      iaPage: "https://archive.org/details/jiayou-magazine" },
+    ucg: { label: "游戏机实用技术", data: "data/ucg.json", back: "ucg.html",
+      iaPage: "https://archive.org/details/UCG-2011" },
+    gameday: { label: "游戏日", data: "data/gameday.json", back: "gameday.html",
+      iaPage: "https://archive.org/details/gd-2005" },
+    softstar: { label: "軟體之星", data: "data/softstar.json", back: "softstar.html",
+      iaPage: "https://archive.org/details/softstarmagazine" },
+    zhangjiwang: { label: "掌机王", data: "data/zhangjiwang.json", back: "zhangjiwang.html",
+      iaPage: "https://archive.org/details/king-of-pocketgames-magazine" }
   };
 
   var col = null, item = null, pageNum = 1, pageCount = 0, fit = "width";
@@ -38,7 +52,9 @@
     var outer = base.split("/").map(encodeURIComponent).join("/");
     var leaf = String(n - 1).padStart(4, "0");
     var member = encodeURIComponent(name + "_jp2/" + name + "_" + leaf + ".jp2");
-    return col.node + "?archive=" + col.dir + outer + "_jp2.zip&file=" + member + "&ext=jpg";
+    var node = item.node ? "https://" + item.node + "/view_archive.php" : col.node;
+    var dir = item.dir || col.dir;
+    return node + "?archive=" + dir + outer + "_jp2.zip&file=" + member + "&ext=jpg";
   }
 
   function show(n) {
@@ -101,7 +117,8 @@
       $("rtitle").textContent = col.label + " " + item.title;
       document.title = col.label + " " + item.title + " · 《軟體世界》杂志文献资料库";
       $("pgtotal").textContent = "/ " + pageCount;
-      $("dl").href = "https://archive.org/download/" + col.dir.split("/")[3] + "/" + encodeURI(item.path);
+      var iaId = item.ia_id || col.dir.split("/")[3];
+      $("dl").href = "https://archive.org/download/" + iaId + "/" + encodeURI(item.path);
       if (!pageCount) {
         $("rd-status").querySelector(".msg").textContent = "该册缺少页面索引，请下载原版阅读。";
         return;

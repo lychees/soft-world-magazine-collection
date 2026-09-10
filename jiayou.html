@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>《家用电脑与游戏机》杂志文献资料 · 1994–2003 · 《軟體世界》杂志文献资料库</title>
+<meta name="description" content="《家用电脑与游戏机》杂志文献资料整理与在线阅读：1994–2003 年共 86 册，由 archive.org 提供文件托管。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="covers-jiayou/jy-001.jpg">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="title">軟體世界</span>
+      <span class="sub">杂志文献资料库</span>
+    </a>
+    <nav class="site-nav">
+      <a href="index.html">軟體世界</a>
+      <a href="popsoft.html">大众软件</a>
+      <a href="zjimi.html">掌机迷</a>
+      <a href="koudaimi.html">口袋迷</a>
+      <a href="index.html#collections">更多馆藏</a>
+      <a href="about.html">关于</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <h1>《家用电脑与游戏机》杂志文献资料</h1>
+    <p class="lead">
+      《家用电脑与游戏机》1994 年 6 月创刊（后改名《家用电脑与游戏》），是国内最早的家用机游戏杂志之一。
+      本站整理 archive.org 收藏的 1994–2003 年共 <b>86 册</b>，
+      全部提供在线阅读，文件由 archive.org 托管。
+    </p>
+    <div class="stats">
+      <div class="stat"><b id="st-issues">–</b><span>馆藏册数</span></div>
+      <div class="stat"><b id="st-pages">–</b><span>总页数</span></div>
+      <div class="stat"><b id="st-size">–</b><span>文件体积</span></div>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section class="block">
+    <h2 class="sec">杂志简介</h2>
+    <div class="prose wiki-box">
+      <p>《家用电脑与游戏机》1994 年 6 月创刊，以 FC、SFC、MD、PS 等家用机平台的游戏攻略、
+        新作情报与硬件文化为主，后更名《家用电脑与游戏》，是 1990 年代家用机玩家的代表性读物之一。</p>
+      <p class="attribution">
+        扫描文件托管于 <a href="https://archive.org/details/jiayou-magazine" target="_blank" rel="noopener">archive.org</a>；
+        杂志内容版权归原出版方所有，本站仅供学习研究使用。
+      </p>
+    </div>
+  </section>
+
+  <section class="block" id="catalog">
+    <h2 class="sec">馆藏目录</h2>
+    <div class="filterbar">
+      <input type="search" id="search" placeholder="搜索期号…">
+      <span class="chip on" data-type="全部">全部</span>
+      <span class="chip" data-type="正刊">正刊</span>
+    </div>
+    <div class="yearnav" id="yearnav"></div>
+    <div id="catalog-list"><p style="color:var(--ink-soft)">目录加载中……</p></div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p>《家用电脑与游戏机》杂志内容版权归原出版方所有，本站为民间收藏整理项目，仅供学习研究使用；扫描文件由 archive.org 托管。</p>
+    <p><a href="index.html">《軟體世界》馆藏</a> ·
+      <a href="https://github.com/lychees/soft-world-magazine-collection" target="_blank" rel="noopener">项目仓库</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+window.MAGCAT = {
+  iaId: "jiayou-magazine",
+  data: "data/jiayou.json",
+  covers: "covers-jiayou/",
+  readerCol: "jiayou",
+  groupOf: function (it) {
+    var y = it.year || 0;
+    return { key: "y" + y, title: y + " 年", short: String(y) };
+  }
+};
+</script>
+<script src="assets/mag-catalog.js"></script>
+</body>
+</html>
