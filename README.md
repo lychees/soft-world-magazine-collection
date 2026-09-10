@@ -9,10 +9,10 @@
 
 ### 《軟體世界》
 
-- 正刊第 0 期（试刊，1989-03）至第 201 期（2006，复刊·终刊），缺第 81、151 期
-- 前身刊物《軟體世界追蹤報導》6 册（1988）
+- 正刊第 0 期（试刊，1989-03）至第 201 期（2006，复刊·终刊），**无缺失**
+- 前身刊物《軟體世界追蹤》第二號（1987-08-25）与《軟體世界追蹤報導》第 1–5 号（1988），另存杂志创刊号另版扫描一册
 - 攻略别册 3 册、线上期刊室 24 册、资讯月特报 1 册
-- 共 **229 册 / 约 49,000 页 / 21 GB** 扫描件
+- 共 **232 册 / 约 49,000 页 / 21 GB** 扫描件（第 81、83 完整、151 期由 [archive.org](https://archive.org/details/soft-world-magazine-collection) 藏品补全）
 
 ### 《大众软件》（[popsoft.html](https://lychees.github.io/soft-world-magazine-collection/popsoft.html)）
 
@@ -21,8 +21,8 @@
 
 ## 在线阅读与下载
 
-- 站内提供 82 册的在线阅读（重压缩版，GitHub Pages 同源加载）：1988–1994 年全部册目（追踪报道、特报及正刊第 0–69 期）及部分小册
-- 全部 229 册原版扫描 PDF 见 [Release · magazines](https://github.com/lychees/soft-world-magazine-collection/releases/tag/magazines)，文件名与 `data/issues.json` 中的 `id` 对应（`<id>.pdf`）
+- **全部 232 册均可在线阅读**：81 册（1988–1994 为主）为站内重压缩版（GitHub Pages 同源加载），其余经 archive.org 页面图片逐页阅读
+- 全部 232 册原版扫描 PDF 见 [Release · magazines](https://github.com/lychees/soft-world-magazine-collection/releases/tag/magazines)，文件名与 `data/issues.json` 中的 `id` 对应（`<id>.pdf`）
 - 《大众软件》518 册全部支持在线阅读（archive.org 页面图片），原版 PDF 经 archive.org 下载
 
 ## 站点结构

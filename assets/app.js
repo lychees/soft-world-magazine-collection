@@ -5,10 +5,9 @@
   var YEAR_NOTES = {
     1988: "《軟體世界追蹤報導》—— 杂志前身刊物，由智冠科技发行。",
     1989: "创刊年：3 月试刊，4 月正式创刊，月刊。",
-    1995: "7 月改版，开始附赠游戏试玩 CD，全球发行量提高到 6 万本。本收藏缺第 81 期。",
-    1996: "第 83 期扫描不全（仅 8 页）。",
+    1995: "7 月改版，开始附赠游戏试玩 CD，全球发行量提高到 6 万本。",
     1997: "第 94 期为合刊（433 页）。",
-    2001: "11 月「軟體世界雜誌」改版重新登場。本收藏缺第 151 期。",
+    2001: "11 月「軟體世界雜誌」改版重新登場。",
     2004: "10 月官方宣布休刊，其后短暂恢复发行。",
     2005: "12 月第 200 期（纪念号）后停刊。",
     2006: "复刊改以季刊发行，第 201 期后终刊。"
@@ -39,7 +38,8 @@
     img.alt = it.title + " 封面";
     img.src = "covers/" + it.id + ".jpg";
     cov.appendChild(img);
-    cov.appendChild(el("span", "badge" + (it.reading ? "" : " dl"), it.reading ? "在线阅读" : "提供下载"));
+    cov.appendChild(el("span", "badge" + (it.reading || it.ia_path ? "" : " dl"),
+                       it.reading || it.ia_path ? "在线阅读" : "提供下载"));
     c.appendChild(cov);
 
     var body = el("div", "body");
@@ -52,7 +52,7 @@
     if (it.note) body.appendChild(el("div", "m", it.note));
 
     var acts = el("div", "acts");
-    if (it.reading) {
+    if (it.reading || it.ia_path) {
       var r = el("a", "btn read", "阅读");
       r.href = "reader.html?id=" + encodeURIComponent(it.id);
       acts.appendChild(r);
@@ -72,7 +72,7 @@
     data.forEach(function (it) {
       totalPages += it.pages || 0;
       totalSize += it.size || 0;
-      if (it.reading) reading++;
+      if (it.reading || it.ia_path) reading++;
     });
     document.getElementById("st-issues").textContent = data.length;
     document.getElementById("st-pages").textContent = totalPages.toLocaleString();

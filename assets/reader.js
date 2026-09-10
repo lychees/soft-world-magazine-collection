@@ -1,4 +1,5 @@
-/* 在线阅读器：PDF.js 单页渲染，支持缩放/缩略图/键盘与触摸导航 */
+/* 軟體世界在线阅读器：本地 PDF.js（有阅读版的册目）+ archive.org 页面图片模式（其余册目）。
+   图片经 <img> 加载，不受 CORS 限制。 */
 (function () {
   var CDN = [
     ["assets/vendor/pdf.min.js", "assets/vendor/pdf.worker.min.js"],
@@ -8,11 +9,16 @@
      "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js"]
   ];
   var DL_BASE = "https://github.com/lychees/soft-world-magazine-collection/releases/download/magazines/";
+  var IA_NODE = "https://ia601800.us.archive.org/view_archive.php";
+  var IA_DIR = "/35/items/soft-world-magazine-collection/";
 
-  var pdf = null, pageNum = 1, pageCount = 0, zoomMode = "width", item = null;
-  var stage, canvas, ctx, thumbsBox, rendering = false, pendingPage = null;
+  var item = null, mode = null;
 
   function $(id) { return document.getElementById(id); }
+
+  /* ================= PDF.js 模式（本地阅读版） ================= */
+  var pdf = null, pageNum = 1, pageCount = 0, zoomMode = "width";
+  var stage, canvas, ctx, thumbsBox, rendering = false, pendingPage = null;
 
   function loadPdfJs(i) {
     return new Promise(function (resolve, reject) {
@@ -36,27 +42,25 @@
     var bar = st.querySelector(".rd-progress i");
     if (pct != null) bar.style.width = Math.round(pct * 100) + "%";
     canvas.style.display = "none";
+    $("rd-img").style.display = "none";
   }
 
   function hideStatus() {
     $("rd-status").style.display = "none";
-    canvas.style.display = "";
+    if (mode === "pdf") canvas.style.display = "";
+    else $("rd-img").style.display = "";
   }
 
   function viewportScale(page) {
     var base = page.getViewport({ scale: 1 });
-    if (zoomMode === "width") {
-      return (stage.clientWidth - 28) / base.width;
-    }
+    if (zoomMode === "width") return (stage.clientWidth - 28) / base.width;
     if (zoomMode === "page") {
-      var sw = (stage.clientWidth - 28) / base.width;
-      var sh = (stage.clientHeight - 28) / base.height;
-      return Math.min(sw, sh);
+      return Math.min((stage.clientWidth - 28) / base.width, (stage.clientHeight - 28) / base.height);
     }
     return parseFloat(zoomMode);
   }
 
-  function render(num) {
+  function renderPdf(num) {
     if (!pdf) return;
     if (rendering) { pendingPage = num; return; }
     rendering = true;
@@ -72,23 +76,16 @@
     }).then(function () {
       pageNum = num;
       $("pg").value = num;
-      document.title = item.title + " · 《軟體世界》杂志文献资料库";
       var cur = thumbsBox.querySelector("canvas.cur");
       if (cur) cur.classList.remove("cur");
       var t = thumbsBox.children[num - 1];
       if (t) { t.classList.add("cur"); t.scrollIntoView({ block: "nearest" }); }
       rendering = false;
-      if (pendingPage != null) { var p = pendingPage; pendingPage = null; render(p); }
+      if (pendingPage != null) { var p = pendingPage; pendingPage = null; renderPdf(p); }
     }).catch(function (e) {
       rendering = false;
       status("页面渲染失败：" + e.message);
     });
-  }
-
-  function go(delta) {
-    var n = pageNum + delta;
-    if (n < 1 || n > pageCount) return;
-    render(n);
   }
 
   function buildThumbs() {
@@ -97,7 +94,7 @@
       (function (n) {
         var c = document.createElement("canvas");
         c.title = "第 " + n + " 页";
-        c.addEventListener("click", function () { render(n); });
+        c.addEventListener("click", function () { renderPdf(n); });
         frag.appendChild(c);
         pdf.getPage(n).then(function (page) {
           var base = page.getViewport({ scale: 1 });
@@ -112,16 +109,11 @@
     thumbsBox.appendChild(frag);
   }
 
-  function start(it) {
-    item = it;
-    $("rtitle").textContent = it.title + (it.date ? "（" + it.date + "）" : "");
-    $("dl").href = DL_BASE + it.id + ".pdf";
+  function startPdf(it) {
+    mode = "pdf";
     status("正在加载 PDF……", 0);
     loadPdfJs(0).then(function () {
-      var task = window.pdfjsLib.getDocument({
-        url: "pdfs/" + it.id + ".pdf",
-        rangeChunkSize: 1048576
-      });
+      var task = window.pdfjsLib.getDocument({ url: "pdfs/" + it.id + ".pdf", rangeChunkSize: 1048576 });
       task.onProgress = function (p) {
         if (p.total) status("正在加载 PDF……（" + Math.round(p.loaded / 1048576) + " / " + Math.round(p.total / 1048576) + " MB）", p.loaded / p.total);
         else status("正在加载 PDF……（" + Math.round(p.loaded / 1048576) + " MB）");
@@ -132,23 +124,78 @@
       pageCount = doc.numPages;
       $("pgtotal").textContent = "/ " + pageCount;
       hideStatus();
-      render(1);
+      renderPdf(1);
       buildThumbs();
     }).catch(function (e) {
       status("加载失败：" + e.message + "。可改用下载原版阅读。");
     });
   }
 
+  /* ================= IA 图片模式 ================= */
+  var iaImg;
+
+  function iaPageUrl(n) {
+    var base = item.ia_path.replace(/\.pdf$/i, "");
+    var name = base.split("/").pop();
+    var outer = base.split("/").map(encodeURIComponent).join("/");
+    var leaf = String(n - 1).padStart(4, "0");
+    var member = encodeURIComponent(name + "_jp2/" + name + "_" + leaf + ".jp2");
+    return IA_NODE + "?archive=" + IA_DIR + outer + "_jp2.zip&file=" + member + "&ext=jpg";
+  }
+
+  function iaLayout() {
+    if (mode !== "ia" || !iaImg.naturalWidth) return;
+    var w;
+    if (zoomMode === "width") w = stage.clientWidth - 28;
+    else if (zoomMode === "page") w = Math.min(stage.clientWidth - 28,
+      (stage.clientHeight - 28) * iaImg.naturalWidth / iaImg.naturalHeight);
+    else w = iaImg.naturalWidth * parseFloat(zoomMode);
+    iaImg.style.width = Math.floor(w) + "px";
+    iaImg.style.height = "auto";
+  }
+
+  function showIa(n) {
+    if (n < 1 || n > pageCount) return;
+    pageNum = n;
+    $("pg").value = n;
+    status("第 " + n + " / " + pageCount + " 页加载中……");
+    iaImg.src = iaPageUrl(n);
+    [n + 1, n + 2].forEach(function (k) {
+      if (k <= pageCount) { var p = new Image(); p.src = iaPageUrl(k); }
+    });
+  }
+
+  function startIa(it) {
+    mode = "ia";
+    pageCount = it.pages || 0;
+    $("pgtotal").textContent = "/ " + pageCount;
+    $("thumbs").style.display = "none";
+    if (!pageCount) {
+      status("该册缺少页面索引，请下载原版阅读。");
+      return;
+    }
+    showIa(1);
+  }
+
+  /* ================= 公共 ================= */
+  function go(d) {
+    if (mode === "pdf") {
+      var n = pageNum + d;
+      if (n < 1 || n > pageCount) return;
+      renderPdf(n);
+    } else if (mode === "ia") {
+      showIa(pageNum + d);
+    }
+  }
+
   function noReading(it) {
-    $("rtitle").textContent = it ? it.title : "未知期刊";
+    mode = "none";
     var box = $("rd-status");
     box.style.display = "";
     box.querySelector(".msg").innerHTML =
       "本期暂未提供在线阅读版本。<br>可下载原版扫描 PDF 阅读（" +
       (it ? Math.round(it.size / 1e6) : "?") + " MB）。";
     box.querySelector(".rd-progress").style.display = "none";
-    canvas.style.display = "none";
-    if (it) $("dl").href = DL_BASE + it.id + ".pdf";
   }
 
   document.addEventListener("DOMContentLoaded", function () {
@@ -156,35 +203,50 @@
     canvas = $("rd-canvas");
     ctx = canvas.getContext("2d");
     thumbsBox = $("rd-thumbs");
+    iaImg = $("rd-img");
+    iaImg.addEventListener("load", function () { hideStatus(); iaLayout(); });
+    iaImg.addEventListener("error", function () {
+      status("第 " + pageNum + " 页加载失败，可尝试下一页或下载原版。");
+    });
+    iaImg.addEventListener("click", function () { go(1); });
 
     var id = new URLSearchParams(location.search).get("id") || "";
     fetch("data/issues.json").then(function (r) { return r.json(); }).then(function (data) {
       var it = data.find(function (x) { return x.id === id; }) || data[0];
-      if (it && it.reading) start(it); else noReading(it);
+      item = it;
+      $("rtitle").textContent = it.title + (it.date ? "（" + it.date + "）" : "");
+      document.title = it.title + " · 《軟體世界》杂志文献资料库";
+      $("dl").href = DL_BASE + it.id + ".pdf";
+      if (it.reading) startPdf(it);
+      else if (it.ia_path) startIa(it);
+      else noReading(it);
     }).catch(function () { noReading(null); });
 
     $("prev").addEventListener("click", function () { go(-1); });
     $("next").addEventListener("click", function () { go(1); });
     $("pg").addEventListener("change", function () {
       var n = parseInt($("pg").value, 10);
-      if (n >= 1 && n <= pageCount) render(n); else $("pg").value = pageNum;
+      if (n >= 1 && n <= pageCount) {
+        if (mode === "ia") showIa(n); else renderPdf(n);
+      } else $("pg").value = pageNum;
     });
     $("zoom").addEventListener("change", function () {
       zoomMode = $("zoom").value;
-      render(pageNum);
+      if (mode === "ia") iaLayout(); else if (pdf) renderPdf(pageNum);
     });
     $("thumbs").addEventListener("click", function () {
       thumbsBox.classList.toggle("open");
     });
     window.addEventListener("resize", function () {
-      if (pdf && (zoomMode === "width" || zoomMode === "page")) render(pageNum);
+      if (mode === "ia") iaLayout();
+      else if (pdf && (zoomMode === "width" || zoomMode === "page")) renderPdf(pageNum);
     });
     document.addEventListener("keydown", function (e) {
       if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
       if (e.key === "ArrowLeft" || e.key === "PageUp") { go(-1); e.preventDefault(); }
       if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") { go(1); e.preventDefault(); }
-      if (e.key === "Home") render(1);
-      if (e.key === "End") render(pageCount);
+      if (e.key === "Home") { if (mode === "ia") showIa(1); else renderPdf(1); }
+      if (e.key === "End") { if (mode === "ia") showIa(pageCount); else renderPdf(pageCount); }
     });
     var tx = null;
     stage.addEventListener("touchstart", function (e) { tx = e.touches[0].clientX; }, { passive: true });
