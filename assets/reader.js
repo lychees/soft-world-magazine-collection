@@ -154,7 +154,7 @@
 
   function renderPair(k) {
     if (!pdf) return;
-    if (rendering) { pendingPair = k; return; }
+    if (rendering) { console.log("[renderPair] queue", k); pendingPair = k; return; }
     rendering = true;
     var pages = pairPages(k);
     console.log("[renderPair] start", k, pages);
@@ -250,6 +250,7 @@
   }
 
   function setMode(toSpread) {
+    console.log("[setMode]", toSpread, "pageNum", pageNum);
     spread = toSpread;
     $("mode").textContent = toSpread ? "单页" : "双页";
     if (mode === "pdf") {
