@@ -26,7 +26,7 @@
     img.alt = it.title + " 封面";
     img.src = CFG.covers + it.id + ".jpg";
     cov.appendChild(img);
-    cov.appendChild(el("span", "badge", "在线阅读"));
+    cov.appendChild(el("span", "badge" + (it.reading === false ? " dl" : ""), it.reading === false ? "提供下载" : "在线阅读"));
     c.appendChild(cov);
 
     var body = el("div", "body");
@@ -38,11 +38,13 @@
     if (it.note) body.appendChild(el("div", "m", it.note));
 
     var acts = el("div", "acts");
-    var r = el("a", "btn read", "阅读");
-    r.href = "ia-reader.html?col=" + CFG.readerCol + "&id=" + encodeURIComponent(it.id);
-    acts.appendChild(r);
-    var d = el("a", "btn dl", "原版");
-    d.href = "https://archive.org/download/" + CFG.iaId + "/" + encodeURI(it.path);
+    if (it.reading !== false) {
+      var r = el("a", "btn read", "阅读");
+      r.href = "ia-reader.html?col=" + CFG.readerCol + "&id=" + encodeURIComponent(it.id);
+      acts.appendChild(r);
+    }
+    var d = el("a", "btn dl", it.reading === false ? "下载" : "原版");
+    d.href = "https://archive.org/download/" + (it.ia_id || CFG.iaId) + "/" + encodeURI(it.path);
     d.title = "从 archive.org 下载 PDF（" + fmtSize(it.size) + "）";
     d.target = "_blank";
     d.rel = "noopener";
