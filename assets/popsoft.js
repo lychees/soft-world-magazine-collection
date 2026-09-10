@@ -95,7 +95,9 @@
 
     var cat = document.getElementById("catalog-list");
     cat.textContent = "";
-    groups.forEach(function (g) {
+    var rendered = 0;
+    var sentinel = el("div", null);
+    function renderGroup(g) {
       var sec = el("section", "year-sec");
       sec.id = g.key;
       sec.appendChild(el("h3", null, g.title + "（" + g.items.length + " 册）"));
@@ -103,8 +105,26 @@
       var grid = el("div", "grid");
       g.items.forEach(function (it) { grid.appendChild(card(it)); });
       sec.appendChild(grid);
-      cat.appendChild(sec);
-    });
+      return sec;
+    }
+    function renderMore() {
+      var batch = 3;
+      while (rendered < groups.length && batch-- > 0) {
+        cat.insertBefore(renderGroup(groups[rendered]), sentinel);
+        rendered++;
+      }
+      if (rendered < groups.length && !cat.contains(sentinel)) cat.appendChild(sentinel);
+      else if (rendered >= groups.length && sentinel.parentNode) sentinel.parentNode.removeChild(sentinel);
+    }
+    renderMore();
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) renderMore();
+        });
+      }, { rootMargin: "400px" });
+      io.observe(sentinel);
+    }
 
     var activeType = "全部", query = "";
     function apply() {
