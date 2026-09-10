@@ -32,6 +32,7 @@
     img.src = "covers-popsoft/" + it.id + ".jpg";
     cov.appendChild(img);
     cov.appendChild(el("span", "badge", "在线阅读"));
+    if (window.favButton) cov.appendChild(window.favButton("popsoft", it.id, it));
     c.appendChild(cov);
 
     var body = el("div", "body");

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>我的书架 · 《軟體世界》杂志文献资料库</title>
+<meta name="description" content="我收藏的杂志册目（本地收藏，无需账号）。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="covers/sw-001.jpg">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="title">軟體世界</span>
+      <span class="sub">杂志文献资料库</span>
+    </a>
+    <nav class="site-nav">
+      <a href="index.html">軟體世界</a>
+      <a href="popsoft.html">大众软件</a>
+      <a href="zjimi.html">掌机迷</a>
+      <a href="koudaimi.html">口袋迷</a>
+      <a href="index.html#collections">更多馆藏</a>
+      <a href="shelf.html" class="on">书架</a>
+      <a href="about.html">关于</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="block">
+    <h2 class="sec">我的书架</h2>
+    <div class="prose">
+      <p style="color:var(--ink-soft); font-size:14px;">收藏保存在本浏览器中（localStorage），无需账号。在任意馆藏卡片上点 ♡ 即可加入书架。</p>
+    </div>
+    <div id="shelf-list"></div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p><a href="index.html">《軟體世界》馆藏</a> ·
+      <a href="https://github.com/lychees/soft-world-magazine-collection" target="_blank" rel="noopener">项目仓库</a>
+    </p>
+  </div>
+</footer>
+
+<script src="assets/favs.js"></script>
+<script src="assets/collections.js"></script>
+<script>
+(function () {
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function colOf(key) {
+    return window.COLLS.find(function (c) { return c.key === key; }) || window.COLLS[0];
+  }
+  function render() {
+    var box = document.getElementById("shelf-list");
+    var favs = window.Favs.list();
+    if (!favs.length) {
+      box.innerHTML = '<p style="color:var(--ink-soft); padding:30px 0;">书架还是空的。去 <a href="index.html#collections">馆藏目录</a> 逛逛，给喜欢的册目点个 ♡ 吧。</p>';
+      return;
+    }
+    var grid = el("div", "grid");
+    favs.forEach(function (f) {
+      var col = colOf(f.col);
+      var c = el("article", "card");
+      var cov = el("div", "cov");
+      var img = new Image();
+      img.loading = "lazy";
+      img.alt = f.title;
+      img.src = col.covers + f.id + ".jpg";
+      cov.appendChild(img);
+      cov.appendChild(el("span", "badge", col.label));
+      c.appendChild(cov);
+      var body = el("div", "body");
+      body.appendChild(el("div", "t", f.title));
+      body.appendChild(el("div", "m", f.date || ""));
+      var acts = el("div", "acts");
+      var r = el("a", "btn read", "阅读");
+      r.href = col.reader(f.id);
+      acts.appendChild(r);
+      var rm = el("button", "btn dl", "移出");
+      rm.style.cursor = "pointer";
+      rm.addEventListener("click", function () {
+        window.Favs.remove(f.col, f.id);
+        render();
+      });
+      acts.appendChild(rm);
+      body.appendChild(acts);
+      c.appendChild(body);
+      grid.appendChild(c);
+    });
+    var old = document.getElementById("shelf-list");
+    old.textContent = "";
+    old.appendChild(grid);
+  }
+  document.addEventListener("DOMContentLoaded", render);
+})();
+</script>
+</body>
+</html>

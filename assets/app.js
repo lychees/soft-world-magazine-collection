@@ -40,6 +40,7 @@
     cov.appendChild(img);
     cov.appendChild(el("span", "badge" + (it.reading || it.ia_path ? "" : " dl"),
                        it.reading || it.ia_path ? "在线阅读" : "提供下载"));
+    if (window.favButton) cov.appendChild(window.favButton("sw", it.id, it));
     c.appendChild(cov);
 
     var body = el("div", "body");

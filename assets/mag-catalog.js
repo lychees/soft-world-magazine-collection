@@ -27,6 +27,7 @@
     img.src = CFG.covers + it.id + ".jpg";
     cov.appendChild(img);
     cov.appendChild(el("span", "badge" + (it.reading === false ? " dl" : ""), it.reading === false ? "提供下载" : "在线阅读"));
+    if (window.favButton) cov.appendChild(window.favButton(CFG.readerCol, it.id, it));
     c.appendChild(cov);
 
     var body = el("div", "body");

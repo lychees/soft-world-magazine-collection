@@ -174,6 +174,20 @@ html.dark .site-head {
 }
 html.dark img { filter: brightness(.92); }
 
+/* ---------- 收藏按钮 ---------- */
+.fav-btn {
+  position: absolute; top: 8px; right: 8px; z-index: 3;
+  width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line);
+  background: rgba(255, 253, 248, .92); color: #b3a89a; font-size: 16px; line-height: 1;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: transform .12s ease, color .12s ease, background .12s ease;
+}
+.fav-btn:hover { transform: scale(1.12); color: var(--accent); }
+.fav-btn.on { color: #d4a017; background: rgba(255, 244, 214, .95); border-color: #d4a017; }
+html.dark .fav-btn { background: rgba(38, 35, 31, .92); color: #6d6355; }
+html.dark .fav-btn.on { color: #e6b93d; background: rgba(64, 52, 20, .95); border-color: #e6b93d; }
+.card .cov { position: relative; }
+
 .site-foot { margin-top: 46px; border-top: 1px solid var(--line); background: var(--paper-2); }
 .site-foot .wrap { padding: 22px 20px 30px; font-size: 13.5px; color: var(--ink-soft); }
 .site-foot p { margin: 0 0 6px; }
