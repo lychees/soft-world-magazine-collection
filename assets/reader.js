@@ -114,15 +114,18 @@
 
   function startPdf(it) {
     mode = "pdf";
+    var docReady = false;
     status("正在加载 PDF……", 0);
     loadPdfJs(0).then(function () {
       var task = window.pdfjsLib.getDocument({ url: "pdfs/" + it.id + ".pdf", rangeChunkSize: 1048576 });
       task.onProgress = function (p) {
+        if (docReady) return;
         if (p.total) status("正在加载 PDF……（" + Math.round(p.loaded / 1048576) + " / " + Math.round(p.total / 1048576) + " MB）", p.loaded / p.total);
         else status("正在加载 PDF……（" + Math.round(p.loaded / 1048576) + " MB）");
       };
       return task.promise;
     }).then(function (doc) {
+      docReady = true;
       pdf = doc;
       pageCount = doc.numPages;
       $("pgtotal").textContent = "/ " + pageCount;
