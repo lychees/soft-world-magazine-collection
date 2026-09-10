@@ -20,7 +20,7 @@
 
   /* ================= PDF.js 模式（本地阅读版） ================= */
   var pdf = null, pageNum = 1, pageCount = 0, zoomMode = "width";
-  var stage, canvas, ctx, thumbsBox, rendering = false, pendingPage = null;
+  var stage, canvas, ctx, thumbsBox, rendering = false, pendingRender = null;
 
   function loadPdfJs(i) {
     return new Promise(function (resolve, reject) {
@@ -62,9 +62,17 @@
     return parseFloat(zoomMode);
   }
 
+  function runPending() {
+    if (pendingRender == null) return;
+    var p = pendingRender;
+    pendingRender = null;
+    if (p.type === "pair") renderPair(p.k);
+    else renderPdf(p.num);
+  }
+
   function renderPdf(num) {
     if (!pdf) return;
-    if (rendering) { pendingPage = num; return; }
+    if (rendering) { pendingRender = { type: "pdf", num: num }; return; }
     rendering = true;
     pdf.getPage(num).then(function (page) {
       var scale = viewportScale(page);
@@ -86,7 +94,7 @@
       var t = thumbsBox.children[num - 1];
       if (t) { t.classList.add("cur"); t.scrollIntoView({ block: "nearest" }); }
       rendering = false;
-      if (pendingPage != null) { var p = pendingPage; pendingPage = null; renderPdf(p); }
+      runPending();
     }).catch(function (e) {
       rendering = false;
       status("页面渲染失败：" + e.message);
@@ -154,10 +162,9 @@
 
   function renderPair(k) {
     if (!pdf) return;
-    if (rendering) { console.log("[renderPair] queue", k); pendingPair = k; return; }
+    if (rendering) { pendingRender = { type: "pair", k: k }; return; }
     rendering = true;
     var pages = pairPages(k);
-    console.log("[renderPair] start", k, pages);
     Promise.all(pages.map(function (n) { return pdf.getPage(n); })).then(function (pgs) {
       var dpr = Math.min(window.devicePixelRatio || 1, 2);
       var bases = pgs.map(function (page) { return page.getViewport({ scale: 1 }); });
@@ -183,7 +190,6 @@
     }).then(function () {
       pairIdx = k;
       $("pg").value = pairPages(k)[0];
-      console.log("[renderPair] done", k);
       ["rd-canvas-l", "rd-canvas-r"].forEach(function (id) {
         var c = $(id);
         c.classList.remove("flip-enter");
@@ -191,14 +197,13 @@
         c.classList.add("flip-enter");
       });
       rendering = false;
-      if (pendingPair != null) { var q = pendingPair; pendingPair = null; renderPair(q); }
+      runPending();
     }).catch(function (e) {
       rendering = false;
-      console.log("[renderPair] fail", k, e && e.message);
       status("页面渲染失败：" + e.message);
     });
   }
-  var pendingPair = null;
+  var pendingRender = null;
 
   function showPairIa(k) {
     pairIdx = k;
@@ -250,7 +255,6 @@
   }
 
   function setMode(toSpread) {
-    console.log("[setMode]", toSpread, "pageNum", pageNum);
     spread = toSpread;
     $("mode").textContent = toSpread ? "单页" : "双页";
     if (mode === "pdf") {
