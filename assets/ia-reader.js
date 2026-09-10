@@ -46,7 +46,7 @@
       iaPage: "https://archive.org/details/king-of-pocketgames-magazine" }
   };
 
-  var col = null, item = null;
+  var col = null, item = null, colKey = null;
   var pageNum = 1, pageCount = 0, fit = "width";
   var spread = false, pairIdx = 0;
   var urlVariant = "redirect";
@@ -115,6 +115,7 @@
     status("第 " + pages.join("·") + " 页加载中……");
     setPairImgs(pages);
     $("pg").value = pages[0];
+    if (window.Progress) window.Progress.save(colKey, item.id, pages[0]);
   }
 
   function snapSpread(dir) {
@@ -132,6 +133,7 @@
     if (!item || n < 1 || n > pageCount) return;
     pageNum = n;
     $("pg").value = n;
+    if (window.Progress) window.Progress.save(colKey, item.id, n);
     var img = $("rd-img");
     status("第 " + n + " / " + pageCount + " 页加载中……");
     img.style.display = "none";
@@ -206,7 +208,7 @@
     $("rd-img-l").addEventListener("click", function () { go(-1); });
 
     var q = new URLSearchParams(location.search);
-    var colKey = q.get("col") || "popsoft";
+    colKey = q.get("col") || "popsoft";
     col = COLLECTIONS[colKey] || COLLECTIONS.popsoft;
     $("back").href = col.back;
     $("ia").href = col.iaPage;
@@ -224,7 +226,8 @@
         status("该册缺少页面索引，请下载原版阅读。");
         return;
       }
-      show(1);
+      var startPage = (window.Progress && id) ? window.Progress.load(colKey, id) : null;
+      show(startPage && startPage > 1 ? startPage : 1);
     }).catch(function (e) {
       status("数据加载失败：" + e);
     });
@@ -241,6 +244,10 @@
       document.body.classList.toggle("zoom-full", fit === "full");
     });
     $("mode").addEventListener("click", function () { setMode(!spread); });
+    $("fs").addEventListener("click", function () {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else $("rd-stage").requestFullscreen().catch(function () {});
+    });
     document.addEventListener("keydown", function (e) {
       if (e.target.tagName === "INPUT") return;
       if (e.key === "ArrowLeft" || e.key === "PageUp") { go(-1); e.preventDefault(); }

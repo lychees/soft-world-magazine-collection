@@ -86,6 +86,7 @@
     }).then(function () {
       pageNum = num;
       $("pg").value = num;
+      if (window.Progress) window.Progress.save("sw", item.id, num);
       canvas.classList.remove("flip-enter");
       void canvas.offsetWidth;
       canvas.classList.add("flip-enter");
@@ -143,7 +144,7 @@
       pageCount = doc.numPages;
       $("pgtotal").textContent = "/ " + pageCount;
       hideStatus();
-      renderPdf(1);
+      renderPdf(it._startPage || 1);
     }).catch(function (e) {
       status("加载失败：" + e.message + "。可改用下载原版阅读。");
     });
@@ -190,6 +191,7 @@
     }).then(function () {
       pairIdx = k;
       $("pg").value = pairPages(k)[0];
+      if (window.Progress) window.Progress.save("sw", item.id, pairPages(k)[0]);
       ["rd-canvas-l", "rd-canvas-r"].forEach(function (id) {
         var c = $(id);
         c.classList.remove("flip-enter");
@@ -208,6 +210,7 @@
   function showPairIa(k) {
     pairIdx = k;
     var pages = pairPages(k);
+    if (window.Progress) window.Progress.save("sw", item.id, pages[0]);
     status("第 " + pages.join("·") + " 页加载中……");
     var L = $("rd-img-l"), R = $("rd-img-r");
     L.style.visibility = "hidden";
@@ -297,6 +300,7 @@
     if (n < 1 || n > pageCount) return;
     pageNum = n;
     $("pg").value = n;
+    if (window.Progress) window.Progress.save("sw", item.id, n);
     status("第 " + n + " / " + pageCount + " 页加载中……");
     iaImg.dataset.tried = "";
     iaImg.src = iaPageUrl(n, iaVariant);
@@ -314,7 +318,7 @@
       status("该册缺少页面索引，请下载原版阅读。");
       return;
     }
-    showIa(1);
+    showIa(it._startPage || 1);
   }
 
   /* ================= 公共 ================= */
@@ -395,14 +399,28 @@
       $("rtitle").textContent = it.title + (it.date ? "（" + it.date + "）" : "");
       document.title = it.title + " · 《軟體世界》杂志文献资料库";
       $("dl").href = DL_BASE + it.id + ".pdf";
-      if (it.reading) startPdf(it);
-      else if (it.ia_path) startIa(it);
+      if (it.reading) {
+        var sp = (window.Progress && id) ? window.Progress.load("sw", id) : null;
+        if (sp && sp > 1) {
+          it._startPage = sp;
+        }
+        startPdf(it);
+      }
+      else if (it.ia_path) {
+        var sp2 = (window.Progress && id) ? window.Progress.load("sw", id) : null;
+        if (sp2 && sp2 > 1) it._startPage = sp2;
+        startIa(it);
+      }
       else noReading(it);
     }).catch(function () { noReading(null); });
 
     $("prev").addEventListener("click", function () { go(-1); });
     $("next").addEventListener("click", function () { go(1); });
     $("mode").addEventListener("click", function () { setMode(!spread); });
+    $("fs").addEventListener("click", function () {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else stage.requestFullscreen().catch(function () {});
+    });
     $("rd-canvas-r").addEventListener("click", function () { go(1); });
     $("rd-canvas-l").addEventListener("click", function () { go(-1); });
     $("rd-img-r").addEventListener("click", function () { go(1); });

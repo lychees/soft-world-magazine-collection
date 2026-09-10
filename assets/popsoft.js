@@ -46,6 +46,13 @@
     var acts = el("div", "acts");
     var r = el("a", "btn read", "阅读");
     r.href = "ia-reader.html?col=popsoft&id=" + encodeURIComponent(it.id);
+    if (window.Progress) {
+      var sp = window.Progress.load("popsoft", it.id);
+      if (sp) {
+        r.textContent = "继续 P." + sp;
+        r.title = "上次读到第 " + sp + " 页";
+      }
+    }
     acts.appendChild(r);
     var d = el("a", "btn dl", "原版");
     d.href = "https://archive.org/download/popsoft-magazine_202403/" + encodeURI(it.path);

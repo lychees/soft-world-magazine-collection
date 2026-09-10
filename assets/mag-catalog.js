@@ -41,6 +41,13 @@
     if (it.reading !== false) {
       var r = el("a", "btn read", "阅读");
       r.href = "ia-reader.html?col=" + CFG.readerCol + "&id=" + encodeURIComponent(it.id);
+      if (window.Progress) {
+        var sp = window.Progress.load(CFG.readerCol, it.id);
+        if (sp) {
+          r.textContent = "继续 P." + sp;
+          r.title = "上次读到第 " + sp + " 页";
+        }
+      }
       acts.appendChild(r);
     }
     var d = el("a", "btn dl", it.reading === false ? "下载" : "原版");

@@ -55,7 +55,18 @@
     if (it.reading || it.ia_path) {
       var r = el("a", "btn read", "阅读");
       r.href = "reader.html?id=" + encodeURIComponent(it.id);
-      acts.appendChild(r);
+      if (window.Progress) {
+        var sp = window.Progress.load("sw", it.id);
+        if (sp) {
+          r.textContent = "继续 P." + sp;
+          r.title = "上次读到第 " + sp + " 页";
+          acts.appendChild(r);
+        } else {
+          acts.appendChild(r);
+        }
+      } else {
+        acts.appendChild(r);
+      }
     }
     var d = el("a", "btn dl", it.reading ? "原版" : "下载");
     d.href = DL_BASE + it.id + ".pdf";
