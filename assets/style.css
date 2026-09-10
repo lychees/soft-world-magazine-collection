@@ -229,6 +229,35 @@ html.dark .fav-btn.on { color: #e6b93d; background: rgba(64, 52, 20, .95); borde
 .rd-progress { width: 280px; height: 6px; background: #171512; border-radius: 4px; margin: 14px auto 0; overflow: hidden; }
 .rd-progress i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .2s; }
 
+/* ---------- 书签面板 ---------- */
+.bm-panel {
+  display: none; position: absolute; top: 46px; right: 14px; z-index: 40;
+  background: var(--card, #fffdf8); color: var(--ink, #2b2620);
+  border: 1px solid var(--line, #d8cfbc); border-radius: 8px; box-shadow: var(--shadow);
+  padding: 10px 12px; min-width: 180px; max-height: 300px; overflow-y: auto; font-size: 14px;
+}
+.bm-panel.open { display: block; }
+.bm-panel h4 { margin: 0 0 8px; font-size: 14px; }
+.bm-panel .bm-row { display: flex; align-items: center; gap: 8px; padding: 3px 0; }
+.bm-panel .bm-row a { flex: 1; }
+.bm-panel .bm-row button { background: none; border: 0; color: #a33; cursor: pointer; font-size: 14px; }
+.bm-panel .bm-empty { color: var(--ink-soft, #5d554a); font-size: 13px; }
+/* ---------- 书签面板 ---------- */
+.bm-panel {
+  display: none; position: absolute; top: 46px; right: 14px; z-index: 40;
+  background: var(--card, #fffdf8); color: var(--ink, #2b2620);
+  border: 1px solid var(--line, #d8cfbc); border-radius: 8px; box-shadow: var(--shadow);
+  padding: 10px 12px; min-width: 180px; max-height: 300px; overflow-y: auto; font-size: 14px;
+}
+.bm-panel.open { display: block; }
+.bm-panel h4 { margin: 0 0 8px; font-size: 14px; }
+.bm-panel .bm-row { display: flex; align-items: center; gap: 8px; padding: 3px 0; }
+.bm-panel .bm-row a { flex: 1; }
+.bm-panel .bm-row button { background: none; border: 0; color: #a33; cursor: pointer; font-size: 14px; }
+.bm-panel .bm-empty { color: var(--ink-soft, #5d554a); font-size: 13px; }
+#bm.on { color: #d4a017; }
+.rd-thumbs canvas.bm { outline: 2px solid #d4a017; outline-offset: -2px; }
+
 @media (max-width: 640px) {
   .hero h1 { font-size: 26px; }
   .brand .title { font-size: 23px; }

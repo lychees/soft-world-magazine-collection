@@ -85,6 +85,40 @@
 
   function setVisible(el, on) { el.style.display = on ? "" : "none"; }
 
+  function bmPaint() {
+    if (!window.Bookmarks || !item) return;
+    var on = window.Bookmarks.has(colKey, item.id, pageNum);
+    $("bm").textContent = on ? "★" : "☆";
+    $("bm").classList.toggle("on", on);
+  }
+
+  function bmPanel(force) {
+    var p = $("bm-panel");
+    if (force === true) p.classList.add("open");
+    else p.classList.toggle("open");
+    if (!p.classList.contains("open")) return;
+    p.innerHTML = "<h4>书签</h4>";
+    var pages = window.Bookmarks.list(colKey, item.id);
+    if (!pages.length) {
+      p.innerHTML += '<div class="bm-empty">还没有书签。翻到想标记的页，点 ☆ 收藏。</div>';
+      return;
+    }
+    pages.forEach(function (pg) {
+      var row = document.createElement("div");
+      row.className = "bm-row";
+      var a = document.createElement("a");
+      a.href = "javascript:void(0)";
+      a.textContent = "第 " + pg + " 页";
+      a.addEventListener("click", function () { gotoPage(pg); p.classList.remove("open"); });
+      var del = document.createElement("button");
+      del.textContent = "×";
+      del.addEventListener("click", function () { window.Bookmarks.clear(colKey, item.id, pg); bmPanel(true); bmPaint(); });
+      row.appendChild(a);
+      row.appendChild(del);
+      p.appendChild(row);
+    });
+  }
+
   /* ---------- 双页对开 ---------- */
   function maxPair() { return Math.max(0, Math.floor(pageCount / 2)); }
   function pairPages(k) {
@@ -124,6 +158,7 @@
     setPairImgs(pages);
     $("pg").value = pages[0];
     if (window.Progress) window.Progress.save(colKey, item.id, pages[0]);
+    bmPaint();
   }
 
   function snapSpread(dir) {
@@ -142,6 +177,7 @@
     pageNum = n;
     $("pg").value = n;
     if (window.Progress) window.Progress.save(colKey, item.id, n);
+    bmPaint();
     var img = $("rd-img");
     status("第 " + n + " / " + pageCount + " 页加载中……");
     img.style.display = "none";
@@ -260,6 +296,12 @@
       if (window.Zoom) window.Zoom.save(colKey, item.id, fit);
     });
     $("mode").addEventListener("click", function () { setMode(!spread); });
+    $("bm").addEventListener("click", function () {
+      if (!window.Bookmarks) return;
+      var added = window.Bookmarks.toggle(colKey, item.id, pageNum);
+      bmPaint();
+      if (added) bmPanel(true);
+    });
     $("fs").addEventListener("click", function () {
       if (document.fullscreenElement) document.exitFullscreen();
       else $("rd-stage").requestFullscreen().catch(function () {});

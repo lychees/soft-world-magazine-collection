@@ -87,6 +87,7 @@
       pageNum = num;
       $("pg").value = num;
       if (window.Progress) window.Progress.save("sw", item.id, num);
+      bmPaint();
       canvas.classList.remove("flip-enter");
       void canvas.offsetWidth;
       canvas.classList.add("flip-enter");
@@ -192,6 +193,7 @@
       pairIdx = k;
       $("pg").value = pairPages(k)[0];
       if (window.Progress) window.Progress.save("sw", item.id, pairPages(k)[0]);
+      bmPaint();
       ["rd-canvas-l", "rd-canvas-r"].forEach(function (id) {
         var c = $(id);
         c.classList.remove("flip-enter");
@@ -211,6 +213,7 @@
     pairIdx = k;
     var pages = pairPages(k);
     if (window.Progress) window.Progress.save("sw", item.id, pages[0]);
+    bmPaint();
     status("第 " + pages.join("·") + " 页加载中……");
     var L = $("rd-img-l"), R = $("rd-img-r");
     L.style.visibility = "hidden";
@@ -301,6 +304,7 @@
     pageNum = n;
     $("pg").value = n;
     if (window.Progress) window.Progress.save("sw", item.id, n);
+    bmPaint();
     status("第 " + n + " / " + pageCount + " 页加载中……");
     iaImg.dataset.tried = "";
     iaImg.src = iaPageUrl(n, iaVariant);
@@ -322,6 +326,52 @@
   }
 
   /* ================= 公共 ================= */
+  function bmPaint() {
+    if (!window.Bookmarks || !item) return;
+    var on = window.Bookmarks.has("sw", item.id, pageNum);
+    $("bm").textContent = on ? "★" : "☆";
+    $("bm").classList.toggle("on", on);
+    if (thumbsBox) {
+      Array.prototype.forEach.call(thumbsBox.children, function (c, i) {
+        c.classList.toggle("bm", window.Bookmarks.has("sw", item.id, i + 1));
+      });
+    }
+  }
+
+  function bmPanel(force) {
+    var p = $("bm-panel");
+    if (force === true) p.classList.add("open");
+    else p.classList.toggle("open");
+    if (!p.classList.contains("open")) return;
+    p.innerHTML = "<h4>书签</h4>";
+    var pages = window.Bookmarks.list("sw", item.id);
+    if (!pages.length) {
+      p.innerHTML += '<div class="bm-empty">还没有书签。翻到想标记的页，点 ☆ 收藏。</div>';
+      return;
+    }
+    pages.forEach(function (pg) {
+      var row = document.createElement("div");
+      row.className = "bm-row";
+      var a = document.createElement("a");
+      a.href = "javascript:void(0)";
+      a.textContent = "第 " + pg + " 页";
+      a.addEventListener("click", function () {
+        p.classList.remove("open");
+        if (spread) {
+          if (mode === "ia") showPairIa(pairOfPage(pg)); else renderPair(pairOfPage(pg));
+        } else {
+          if (mode === "ia") showIa(pg); else renderPdf(pg);
+        }
+      });
+      var del = document.createElement("button");
+      del.textContent = "×";
+      del.addEventListener("click", function () { window.Bookmarks.clear("sw", item.id, pg); bmPanel(true); bmPaint(); });
+      row.appendChild(a);
+      row.appendChild(del);
+      p.appendChild(row);
+    });
+  }
+
   function go(d) {
     if (mode !== "pdf" && mode !== "ia") return;
     if (spread) {
@@ -426,6 +476,12 @@
     $("prev").addEventListener("click", function () { go(-1); });
     $("next").addEventListener("click", function () { go(1); });
     $("mode").addEventListener("click", function () { setMode(!spread); });
+    $("bm").addEventListener("click", function () {
+      if (!window.Bookmarks) return;
+      var added = window.Bookmarks.toggle("sw", item.id, pageNum);
+      bmPaint();
+      if (added) bmPanel(true);
+    });
     $("fs").addEventListener("click", function () {
       if (document.fullscreenElement) document.exitFullscreen();
       else stage.requestFullscreen().catch(function () {});
