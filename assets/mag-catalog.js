@@ -1,13 +1,8 @@
-/* 大众软件目录页：加载 data/popsoft.json，按年分组渲染 */
+/* 通用杂志目录页：由页面内 window.MAGCAT 配置驱动（zjimi / koudaimi 等）。
+   配置: { data, covers, readerCol, groupOf(it) -> {key,title,note}, types:[...] } */
 (function () {
-  var YEAR_NOTES = {
-    1995: "8 月创刊，创刊号发行 10 万册。",
-    1999: "改为半月刊（上/下刊）。",
-    2009: "改为旬刊（上/中/下旬），每月 1 日、8 日、16 日发行。",
-    2013: "年底主办方收回刊号，停止出刊。",
-    2014: "与《e-play电脑游戏新干线》合并，变更月刊继续发行。",
-    2016: "12 月实体杂志宣布暂时休刊。"
-  };
+  var CFG = window.MAGCAT;
+  if (!CFG) return;
 
   function fmtSize(bytes) {
     if (bytes >= 1e9) return (bytes / 1e9).toFixed(1) + " GB";
@@ -23,13 +18,13 @@
   function card(it) {
     var c = el("article", "card");
     c.dataset.type = it.type;
-    c.dataset.key = (it.title + " " + it.id + " " + (it.date || "")).toLowerCase();
+    c.dataset.key = (it.title + " " + it.id + " " + (it.note || "")).toLowerCase();
 
     var cov = el("div", "cov");
     var img = new Image();
     img.loading = "lazy";
     img.alt = it.title + " 封面";
-    img.src = "covers-popsoft/" + it.id + ".jpg";
+    img.src = CFG.covers + it.id + ".jpg";
     cov.appendChild(img);
     cov.appendChild(el("span", "badge", "在线阅读"));
     c.appendChild(cov);
@@ -37,7 +32,6 @@
     var body = el("div", "body");
     body.appendChild(el("div", "t", it.title));
     var meta = [];
-    if (it.date) meta.push(it.date);
     if (it.pages) meta.push(it.pages + " 页");
     meta.push(fmtSize(it.size));
     body.appendChild(el("div", "m", meta.join(" · ")));
@@ -45,10 +39,10 @@
 
     var acts = el("div", "acts");
     var r = el("a", "btn read", "阅读");
-    r.href = "ia-reader.html?col=popsoft&id=" + encodeURIComponent(it.id);
+    r.href = "ia-reader.html?col=" + CFG.readerCol + "&id=" + encodeURIComponent(it.id);
     acts.appendChild(r);
     var d = el("a", "btn dl", "原版");
-    d.href = "https://archive.org/download/popsoft-magazine_202403/" + encodeURI(it.path);
+    d.href = "https://archive.org/download/" + CFG.iaId + "/" + encodeURI(it.path);
     d.title = "从 archive.org 下载 PDF（" + fmtSize(it.size) + "）";
     d.target = "_blank";
     d.rel = "noopener";
@@ -67,20 +61,16 @@
 
     var groups = [];
     data.forEach(function (it) {
-      var key = it.year ? "y" + it.year : "guide";
-      var g = groups.find(function (g) { return g.key === key; });
-      if (!g) {
-        g = { key: key, title: it.year ? it.year + " 年" : "攻略别册",
-              note: YEAR_NOTES[it.year] || "", items: [] };
-        groups.push(g);
-      }
+      var gi = CFG.groupOf(it);
+      var g = groups.find(function (g) { return g.key === gi.key; });
+      if (!g) { g = { key: gi.key, title: gi.title, note: gi.note || "", items: [] }; groups.push(g); }
       g.items.push(it);
     });
-    groups.sort(function (a, b) { return a.key.localeCompare(b.key); });
+    groups.sort(function (a, b) { return a.key.localeCompare(b.key, undefined, { numeric: true }); });
 
     var nav = document.getElementById("yearnav");
     groups.forEach(function (g) {
-      var a = el("a", null, g.key === "guide" ? "攻略" : g.key.slice(1));
+      var a = el("a", null, g.short || g.title);
       a.href = "#" + g.key;
       nav.appendChild(a);
     });
@@ -125,7 +115,7 @@
     });
   }
 
-  fetch("data/popsoft.json")
+  fetch(CFG.data)
     .then(function (r) { return r.json(); })
     .then(render)
     .catch(function (e) {

@@ -1,7 +1,7 @@
 # 软体世界杂志收藏 · SoftWorld Magazine Archive
 
 《軟體世界》（1989–2006，智冠科技）杂志文献资料整理与在线阅读网站。
-另设姐妹馆藏《大众软件》（1995–2016）文献资料页。
+另设姐妹馆藏《大众软件》《掌机迷》《口袋迷》文献资料页。
 
 **在线访问**：https://lychees.github.io/soft-world-magazine-collection/
 
@@ -19,31 +19,44 @@
 - 1995–2016 年正刊 495 册、增刊·特刊 12 册、攻略别册 11 册，共 **518 册**
 - 扫描文件由 [archive.org](https://archive.org/details/popsoft-magazine_202403) 托管，站内逐页图片在线阅读
 
+### 《掌机迷》（[zjimi.html](https://lychees.github.io/soft-world-magazine-collection/zjimi.html)）
+
+- 2003–2011 年 Vol.001–135 共 **134 册**（含合刊与副刊；缺 Vol.132 及 Vol.136–141）
+- 扫描文件由 [archive.org](https://archive.org/details/pocketgamer) 托管，站内逐页图片在线阅读
+
+### 《口袋迷》（[koudaimi.html](https://lychees.github.io/soft-world-magazine-collection/koudaimi.html)）
+
+- 正刊第 5–10 期、01–05 辑精华本及专题书，共 **9 册**（非全刊收藏）
+- 扫描文件由 [archive.org](https://archive.org/details/gamebooks_mhsg) 托管，站内逐页图片在线阅读
+
 ## 在线阅读与下载
 
-- **全部 232 册均可在线阅读**：81 册（1988–1994 为主）为站内重压缩版（GitHub Pages 同源加载），其余经 archive.org 页面图片逐页阅读
+- **軟體世界全部 232 册均可在线阅读**：81 册（1988–1994 为主）为站内重压缩版（GitHub Pages 同源加载），其余经 archive.org 页面图片逐页阅读
 - 全部 232 册原版扫描 PDF 见 [Release · magazines](https://github.com/lychees/soft-world-magazine-collection/releases/tag/magazines)，文件名与 `data/issues.json` 中的 `id` 对应（`<id>.pdf`）
-- 《大众软件》518 册全部支持在线阅读（archive.org 页面图片），原版 PDF 经 archive.org 下载
+- 《大众软件》《掌机迷》《口袋迷》全部支持在线阅读（archive.org 页面图片），原版 PDF 经 archive.org 下载
 
 ## 站点结构
 
 ```
-index.html          首页（杂志百科、编年、馆藏目录）
+index.html          首页（軟體世界：杂志百科、编年、馆藏目录）
 popsoft.html        《大众软件》馆藏目录
-reader.html         軟體世界在线阅读器（PDF.js，?id=<期号>）
-popsoft-reader.html 大众软件在线阅读器（archive.org 页面图片，?id=<id>）
+zjimi.html          《掌机迷》馆藏目录
+koudaimi.html       《口袋迷》馆藏目录
+reader.html         軟體世界在线阅读器（PDF.js 本地 + archive.org 图片，?id=<期号>）
+ia-reader.html      通用 archive.org 图片阅读器（?col=<馆藏>&id=<id>）
 about.html          关于与版权说明
 assets/             样式、脚本、本地化的 PDF.js
-data/issues.json    軟體世界馆藏元数据
-data/popsoft.json   大众软件馆藏元数据
-covers/<id>.jpg     軟體世界封面缩略图（229 册）
+data/               各馆藏元数据 JSON
+covers/             軟體世界封面缩略图（232 册）
 covers-popsoft/     大众软件封面缩略图（518 册）
-pdfs/<id>.pdf       軟體世界在线阅读版（82 册）
+covers-zjimi/       掌机迷封面缩略图（134 册）
+covers-koudaimi/    口袋迷封面缩略图（9 册）
+pdfs/<id>.pdf       軟體世界在线阅读版（81 册）
 tools/              馆藏整理与生成脚本
 ```
 
 ## 版权
 
-杂志内容版权归智冠科技（Soft-World International）及相关权利人所有。
+杂志内容版权归智冠科技（Soft-World International）及各自原出版方、相关权利人所有。
 本项目为非营利的历史文献保存与整理，仅供学习研究使用。
-「杂志百科」内容整理自维基百科条目「軟體世界」，依 CC BY-SA 4.0 许可使用。
+「杂志百科」内容整理自维基百科条目「軟體世界」「大众软件」，依 CC BY-SA 4.0 许可使用。

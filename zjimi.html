@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>《掌机迷》杂志文献资料 · 2003–2011 · 《軟體世界》杂志文献资料库</title>
+<meta name="description" content="《掌机迷》（2003–2011）杂志文献资料整理与在线阅读：Vol.001–135 共 134 册，由 archive.org 提供文件托管。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="covers-zjimi/zj-001.jpg">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="title">軟體世界</span>
+      <span class="sub">杂志文献资料库</span>
+    </a>
+    <nav class="site-nav">
+      <a href="index.html">軟體世界</a>
+      <a href="popsoft.html">大众软件</a>
+      <a href="zjimi.html" class="on">掌机迷</a>
+      <a href="koudaimi.html">口袋迷</a>
+      <a href="about.html">关于</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <h1>《掌机迷》杂志文献资料</h1>
+    <p class="lead">
+      《掌机迷》（Pocket Gamer）由《电子游戏软件》杂志社（次世代传媒联盟）于 2003 年 5 月创刊，
+      是国内首本专注掌机游戏攻略的实体杂志，2011 年 8 月停刊，共出版 141 期。
+      本站整理 archive.org 收藏的 Vol.001–135 共 <b>134 册</b>（含 Vol.073·074 合刊与 Vol.037 副刊；
+      缺 Vol.132 及 Vol.136–141），全部提供在线阅读，文件由 archive.org 托管。
+    </p>
+    <div class="stats">
+      <div class="stat"><b id="st-issues">–</b><span>馆藏册数</span></div>
+      <div class="stat"><b id="st-pages">–</b><span>总页数</span></div>
+      <div class="stat"><b id="st-size">–</b><span>文件体积</span></div>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section class="block">
+    <h2 class="sec">杂志简介</h2>
+    <div class="prose wiki-box">
+      <p>《掌机迷》2003 年 5 月创刊时为《电子游戏软件》增刊，后独立成刊，内容以 GBA、NDS、PSP 等掌机平台的
+        游戏攻略、新作情报、硬件评测与周边文化为主，是 2000 年代国内掌机玩家的主要读物之一。
+        2011 年 8 月出版第 141 期后彻底停刊。</p>
+      <p class="attribution">
+        扫描文件托管于 <a href="https://archive.org/details/pocketgamer" target="_blank" rel="noopener">archive.org</a>；
+        杂志内容版权归原出版方所有，本站仅供学习研究使用。
+      </p>
+    </div>
+  </section>
+
+  <section class="block" id="catalog">
+    <h2 class="sec">馆藏目录</h2>
+    <div class="filterbar">
+      <input type="search" id="search" placeholder="搜索期号…">
+      <span class="chip on" data-type="全部">全部</span>
+      <span class="chip" data-type="正刊">正刊</span>
+      <span class="chip" data-type="副刊">副刊</span>
+    </div>
+    <div class="yearnav" id="yearnav"></div>
+    <div id="catalog-list"><p style="color:var(--ink-soft)">目录加载中……</p></div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p>《掌机迷》杂志内容版权归原出版方所有，本站为民间收藏整理项目，仅供学习研究使用；扫描文件由 archive.org 托管。</p>
+    <p><a href="index.html">《軟體世界》馆藏</a> ·
+      <a href="https://archive.org/details/pocketgamer" target="_blank" rel="noopener">archive.org 原始条目</a> ·
+      <a href="https://github.com/lychees/soft-world-magazine-collection" target="_blank" rel="noopener">项目仓库</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+window.MAGCAT = {
+  iaId: "pocketgamer",
+  data: "data/zjimi.json",
+  covers: "covers-zjimi/",
+  readerCol: "zjimi",
+  groupOf: function (it) {
+    if (it.type === "副刊") return { key: "sp", title: "副刊", short: "副刊" };
+    var v = it.vol || 0;
+    var lo = Math.floor((v - 1) / 30) * 30 + 1, hi = lo + 29;
+    return { key: "v" + lo, title: "Vol." + String(lo).padStart(3, "0") + "–" + String(hi).padStart(3, "0"),
+             short: lo + "–" + hi };
+  }
+};
+</script>
+<script src="assets/mag-catalog.js"></script>
+</body>
+</html>

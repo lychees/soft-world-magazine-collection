@@ -2,36 +2,14 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>在线阅读 · 大众软件 · 《軟體世界》杂志文献资料库</title>
-<link rel="stylesheet" href="assets/style.css">
-<link rel="icon" href="covers/sw-001.jpg">
-<style>
-#rd-img.fit-w { max-width: 100%; height: auto; }
-#rd-img.fit-full { max-width: none; }
-#rd-img { background: #fff; box-shadow: 0 4px 24px rgba(0,0,0,.45); cursor: pointer; }
-</style>
+<meta http-equiv="refresh" content="0; url=ia-reader.html?col=popsoft">
+<title>跳转 · 大众软件在线阅读</title>
 </head>
 <body>
-
-<div class="rd-head">
-  <span class="rt" id="rtitle">大众软件</span>
-  <button id="prev" title="上一页（←）">‹ 上一页</button>
-  <span><input class="pg" id="pg" value="1"> <span id="pgtotal"></span></span>
-  <button id="next" title="下一页（→）">下一页 ›</button>
-  <button id="zoom">适应宽度</button>
-  <a class="btnx" id="dl" href="#" target="_blank" rel="noopener">下载原版</a>
-  <a class="btnx" id="ia" href="https://archive.org/details/popsoft-magazine_202403" target="_blank" rel="noopener">archive.org</a>
-  <a class="btnx" href="popsoft.html">返回目录</a>
-</div>
-
-<div class="rd-stage" id="rd-stage" style="min-height: calc(100vh - 52px)">
-  <div class="rd-status" id="rd-status">
-    <div class="msg">正在加载……</div>
-  </div>
-  <img id="rd-img" class="fit-w" style="display:none" alt="杂志页面">
-</div>
-
-<script src="assets/popsoft-reader.js"></script>
+<script>
+  var q = location.search;
+  location.replace("ia-reader.html?col=popsoft" + (q ? "&" + q.slice(1) : ""));
+</script>
+<p>已迁移至 <a href="ia-reader.html?col=popsoft">通用阅读器</a>，正在跳转……</p>
 </body>
 </html>

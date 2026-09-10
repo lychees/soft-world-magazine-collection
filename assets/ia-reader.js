@@ -1,0 +1,124 @@
+/* 通用 archive.org 图片阅读器：?col=<馆藏>&id=<册目>。
+   通过 <img> 逐页加载 IA 节点 view_archive 图片，不受 CORS 限制。 */
+(function () {
+  var COLLECTIONS = {
+    popsoft: {
+      label: "大众软件",
+      data: "data/popsoft.json",
+      back: "popsoft.html",
+      node: "https://ia801608.us.archive.org/view_archive.php",
+      dir: "/0/items/popsoft-magazine_202403/",
+      iaPage: "https://archive.org/details/popsoft-magazine_202403"
+    },
+    zjimi: {
+      label: "掌机迷",
+      data: "data/zjimi.json",
+      back: "zjimi.html",
+      node: "https://ia800402.us.archive.org/view_archive.php",
+      dir: "/35/items/pocketgamer/",
+      iaPage: "https://archive.org/details/pocketgamer"
+    },
+    koudaimi: {
+      label: "口袋迷",
+      data: "data/koudaimi.json",
+      back: "koudaimi.html",
+      node: "https://ia600500.us.archive.org/view_archive.php",
+      dir: "/24/items/gamebooks_mhsg/",
+      iaPage: "https://archive.org/details/gamebooks_mhsg"
+    }
+  };
+
+  var col = null, item = null, pageNum = 1, pageCount = 0, fit = "width";
+
+  function $(id) { return document.getElementById(id); }
+
+  function pageUrl(n) {
+    var base = item.path.replace(/\.pdf$/i, "");
+    var name = base.split("/").pop();
+    var outer = base.split("/").map(encodeURIComponent).join("/");
+    var leaf = String(n - 1).padStart(4, "0");
+    var member = encodeURIComponent(name + "_jp2/" + name + "_" + leaf + ".jp2");
+    return col.node + "?archive=" + col.dir + outer + "_jp2.zip&file=" + member + "&ext=jpg";
+  }
+
+  function show(n) {
+    if (!item || n < 1 || n > pageCount) return;
+    pageNum = n;
+    $("pg").value = n;
+    var img = $("rd-img");
+    var st = $("rd-status");
+    st.style.display = "";
+    st.querySelector(".msg").textContent = "第 " + n + " / " + pageCount + " 页加载中……";
+    img.style.display = "none";
+    img.src = pageUrl(n);
+    [n + 1, n + 2].forEach(function (k) {
+      if (k <= pageCount) { var p = new Image(); p.src = pageUrl(k); }
+    });
+  }
+
+  function go(d) { show(pageNum + d); }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var img = $("rd-img");
+    img.addEventListener("load", function () {
+      $("rd-status").style.display = "none";
+      img.style.display = "";
+    });
+    img.addEventListener("error", function () {
+      var st = $("rd-status");
+      st.style.display = "";
+      st.querySelector(".msg").textContent = "第 " + pageNum + " 页加载失败，可尝试下一页或下载原版。";
+    });
+    img.addEventListener("click", function () { go(1); });
+
+    var q = new URLSearchParams(location.search);
+    var colKey = q.get("col") || "popsoft";
+    col = COLLECTIONS[colKey] || COLLECTIONS.popsoft;
+    $("back").href = col.back;
+    $("ia").href = col.iaPage;
+
+    var id = q.get("id") || "";
+    fetch(col.data).then(function (r) { return r.json(); }).then(function (data) {
+      item = data.find(function (x) { return x.id === id; }) || data[0];
+      pageCount = item.pages || 0;
+      $("rtitle").textContent = col.label + " " + item.title;
+      document.title = col.label + " " + item.title + " · 《軟體世界》杂志文献资料库";
+      $("pgtotal").textContent = "/ " + pageCount;
+      $("dl").href = "https://archive.org/download/" + col.dir.split("/")[3] + "/" + encodeURI(item.path);
+      if (!pageCount) {
+        $("rd-status").querySelector(".msg").textContent = "该册缺少页面索引，请下载原版阅读。";
+        return;
+      }
+      show(1);
+    }).catch(function (e) {
+      $("rd-status").querySelector(".msg").textContent = "数据加载失败：" + e;
+    });
+
+    $("prev").addEventListener("click", function () { go(-1); });
+    $("next").addEventListener("click", function () { go(1); });
+    $("pg").addEventListener("change", function () {
+      var n = parseInt($("pg").value, 10);
+      if (n >= 1 && n <= pageCount) show(n); else $("pg").value = pageNum;
+    });
+    $("zoom").addEventListener("click", function () {
+      fit = fit === "width" ? "full" : "width";
+      img.className = fit === "width" ? "fit-w" : "fit-full";
+      $("zoom").textContent = fit === "width" ? "适应宽度" : "原始尺寸";
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.target.tagName === "INPUT") return;
+      if (e.key === "ArrowLeft" || e.key === "PageUp") { go(-1); e.preventDefault(); }
+      if (e.key === "ArrowRight" || e.key === "PageDown" || e.key === " ") { go(1); e.preventDefault(); }
+      if (e.key === "Home") show(1);
+      if (e.key === "End") show(pageCount);
+    });
+    var tx = null, stage = $("rd-stage");
+    stage.addEventListener("touchstart", function (e) { tx = e.touches[0].clientX; }, { passive: true });
+    stage.addEventListener("touchend", function (e) {
+      if (tx == null) return;
+      var dx = e.changedTouches[0].clientX - tx;
+      if (Math.abs(dx) > 60) go(dx < 0 ? 1 : -1);
+      tx = null;
+    }, { passive: true });
+  });
+})();
