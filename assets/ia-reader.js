@@ -56,13 +56,30 @@
     });
   }
 
-  function go(d) { show(pageNum + d); }
+  function go(d) {
+    var n = pageNum + d;
+    if (n < 1 || n > pageCount) return;
+    window.flipGo($("flip-wrap"), d, snap, function () { show(n); });
+  }
+
+  function snap() {
+    var img = $("rd-img");
+    if (!img || img.style.display === "none" || !img.naturalWidth) return null;
+    var im = new Image();
+    im.src = img.src;
+    im.style.width = img.getBoundingClientRect().width + "px";
+    im.style.height = "auto";
+    return im;
+  }
 
   document.addEventListener("DOMContentLoaded", function () {
     var img = $("rd-img");
     img.addEventListener("load", function () {
       $("rd-status").style.display = "none";
       img.style.display = "";
+      img.classList.remove("flip-enter");
+      void img.offsetWidth;
+      img.classList.add("flip-enter");
     });
     img.addEventListener("error", function () {
       var st = $("rd-status");

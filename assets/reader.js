@@ -76,6 +76,9 @@
     }).then(function () {
       pageNum = num;
       $("pg").value = num;
+      canvas.classList.remove("flip-enter");
+      void canvas.offsetWidth;
+      canvas.classList.add("flip-enter");
       var cur = thumbsBox.querySelector("canvas.cur");
       if (cur) cur.classList.remove("cur");
       var t = thumbsBox.children[num - 1];
@@ -179,13 +182,31 @@
 
   /* ================= 公共 ================= */
   function go(d) {
+    if (mode !== "pdf" && mode !== "ia") return;
+    var n = pageNum + d;
+    if (n < 1 || n > pageCount) return;
+    window.flipGo($("flip-wrap"), d, snap, function () {
+      if (mode === "pdf") renderPdf(n); else showIa(n);
+    });
+  }
+
+  function snap() {
     if (mode === "pdf") {
-      var n = pageNum + d;
-      if (n < 1 || n > pageCount) return;
-      renderPdf(n);
-    } else if (mode === "ia") {
-      showIa(pageNum + d);
+      if (canvas.style.display === "none" || !canvas.width) return null;
+      var im = new Image();
+      im.src = canvas.toDataURL("image/jpeg", 0.85);
+      im.style.width = canvas.style.width;
+      return im;
     }
+    if (mode === "ia") {
+      if (iaImg.style.display === "none" || !iaImg.naturalWidth) return null;
+      var im2 = new Image();
+      im2.src = iaImg.src;
+      im2.style.width = iaImg.getBoundingClientRect().width + "px";
+      im2.style.height = "auto";
+      return im2;
+    }
+    return null;
   }
 
   function noReading(it) {
@@ -204,7 +225,13 @@
     ctx = canvas.getContext("2d");
     thumbsBox = $("rd-thumbs");
     iaImg = $("rd-img");
-    iaImg.addEventListener("load", function () { hideStatus(); iaLayout(); });
+    iaImg.addEventListener("load", function () {
+      hideStatus();
+      iaLayout();
+      iaImg.classList.remove("flip-enter");
+      void iaImg.offsetWidth;
+      iaImg.classList.add("flip-enter");
+    });
     iaImg.addEventListener("error", function () {
       status("第 " + pageNum + " 页加载失败，可尝试下一页或下载原版。");
     });
