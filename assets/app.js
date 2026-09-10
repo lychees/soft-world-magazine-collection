@@ -101,7 +101,8 @@
     });
 
     // sections
-    var cat = document.getElementById("catalog");
+    var cat = document.getElementById("catalog-list");
+    cat.textContent = "";
     groups.forEach(function (g) {
       var sec = el("section", "year-sec");
       sec.id = g.key;
@@ -145,6 +146,6 @@
     .then(function (r) { return r.json(); })
     .then(render)
     .catch(function (e) {
-      document.getElementById("catalog").textContent = "目录数据加载失败：" + e;
+      document.getElementById("catalog-list").textContent = "目录数据加载失败：" + e;
     });
 })();
