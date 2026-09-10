@@ -91,7 +91,10 @@
     });
   }
 
+  var thumbsBuilt = false;
   function buildThumbs() {
+    if (thumbsBuilt) return;
+    thumbsBuilt = true;
     var frag = document.createDocumentFragment();
     for (var i = 1; i <= pageCount; i++) {
       (function (n) {
@@ -131,7 +134,6 @@
       $("pgtotal").textContent = "/ " + pageCount;
       hideStatus();
       renderPdf(1);
-      buildThumbs();
     }).catch(function (e) {
       status("加载失败：" + e.message + "。可改用下载原版阅读。");
     });
@@ -266,6 +268,7 @@
     });
     $("thumbs").addEventListener("click", function () {
       thumbsBox.classList.toggle("open");
+      if (thumbsBox.classList.contains("open")) buildThumbs();
     });
     window.addEventListener("resize", function () {
       if (mode === "ia") iaLayout();
