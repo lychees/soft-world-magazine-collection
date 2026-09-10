@@ -30,11 +30,28 @@
       ov.style.transformOrigin = dir === 1 ? "left center" : "right center";
       ov.appendChild(snapshotEl);
       wrap.appendChild(ov);
-      ov.getBoundingClientRect(); // reflow
-      ov.style.transition = "transform " + DURATION + "ms cubic-bezier(.3,.1,.4,1), opacity " + DURATION + "ms ease-in";
-      ov.style.transform = "rotateY(" + (dir === 1 ? -82 : 82) + "deg)";
-      ov.style.opacity = "0.12";
-      setTimeout(function () { ov.remove(); flipping = false; resolve(); }, DURATION + 20);
+
+      var started = false;
+      function start() {
+        if (started) return;
+        started = true;
+        ov.getBoundingClientRect(); // reflow
+        ov.style.transition = "transform " + DURATION + "ms cubic-bezier(.3,.1,.4,1), opacity " + DURATION + "ms ease-in";
+        ov.style.transform = "rotateY(" + (dir === 1 ? -82 : 82) + "deg)";
+        ov.style.opacity = "0.12";
+        setTimeout(function () { ov.remove(); flipping = false; resolve(); }, DURATION + 20);
+      }
+      // 等快照图像解码，避免白闪；最长等待 180ms
+      var im = ov.querySelector("img");
+      var timer = setTimeout(start, 180);
+      function startOnce() { clearTimeout(timer); start(); }
+      if (im) {
+        if (im.decode) im.decode().then(startOnce, startOnce);
+        else if (im.complete) startOnce();
+        else { im.onload = startOnce; im.onerror = startOnce; }
+      } else {
+        startOnce();
+      }
     });
   }
 
