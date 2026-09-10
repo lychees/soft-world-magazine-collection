@@ -22,9 +22,10 @@
 | [《口袋玩家》](https://lychees.github.io/soft-world-magazine-collection/pkmplayer.html) | — | 33 | archive.org |
 | [《电脑爱好者》](https://lychees.github.io/soft-world-magazine-collection/cfan.html) | 1993–2022 | 192 | archive.org |
 | [《微型计算机》](https://lychees.github.io/soft-world-magazine-collection/mic.html) | 2008–2016 | 124 | archive.org |
+| [《电脑迷》](https://lychees.github.io/soft-world-magazine-collection/pcfan.html) | 2011 | 24 | archive.org |
 | [《口袋迷》](https://lychees.github.io/soft-world-magazine-collection/koudaimi.html) | — | 9 | archive.org（非全刊） |
 
-共 **2,286 册**，绝大多数提供在线阅读（47 册无衍生档仅提供下载）。
+共 **2,310 册**，绝大多数提供在线阅读（47 册无衍生档仅提供下载）。
 
 ## 《軟體世界》馆藏说明
 
@@ -51,6 +52,7 @@ zhangjiwang.html    《掌机王》馆藏目录
 pkmplayer.html      《口袋玩家》馆藏目录
 cfan.html           《电脑爱好者》馆藏目录
 mic.html            《微型计算机》馆藏目录
+pcfan.html         《电脑迷》馆藏目录
 koudaimi.html       《口袋迷》馆藏目录
 reader.html         軟體世界在线阅读器（PDF.js 本地 + archive.org 图片，?id=<期号>）
 ia-reader.html      通用 archive.org 图片阅读器（?col=<馆藏>&id=<id>）

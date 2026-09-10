@@ -13,6 +13,7 @@ window.COLLS = [
   { key: "pkmplayer", label: "口袋玩家", data: "data/pkmplayer.json", covers: "covers-pkmplayer/", reader: function (id) { return "ia-reader.html?col=pkmplayer&id=" + encodeURIComponent(id); } },
   { key: "cfan", label: "电脑爱好者", data: "data/cfan.json", covers: "covers-cfan/", reader: function (id) { return "ia-reader.html?col=cfan&id=" + encodeURIComponent(id); } },
   { key: "mic", label: "微型计算机", data: "data/mic.json", covers: "covers-mic/", reader: function (id) { return "ia-reader.html?col=mic&id=" + encodeURIComponent(id); } },
+  { key: "pcfan", label: "电脑迷", data: "data/pcfan.json", covers: "covers-pcfan/", reader: function (id) { return "ia-reader.html?col=pcfan&id=" + encodeURIComponent(id); } },
   { key: "koudaimi", label: "口袋迷", data: "data/koudaimi.json", covers: "covers-koudaimi/", reader: function (id) { return "ia-reader.html?col=koudaimi&id=" + encodeURIComponent(id); } }
 ];
 

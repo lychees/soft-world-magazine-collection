@@ -49,7 +49,9 @@
     cfan: { label: "电脑爱好者", data: "data/cfan.json", back: "cfan.html",
       iaPage: "https://archive.org/details/2005_20220814" },
     mic: { label: "微型计算机", data: "data/mic.json", back: "mic.html",
-      iaPage: "https://archive.org/details/mic2008-2011" }
+      iaPage: "https://archive.org/details/mic2008-2011" },
+    pcfan: { label: "电脑迷", data: "data/pcfan.json", back: "pcfan.html",
+      iaPage: "https://archive.org/details/201101-a" }
   };
 
   var col = null, item = null, colKey = null;
