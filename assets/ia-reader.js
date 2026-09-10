@@ -6,6 +6,7 @@
       label: "大众软件",
       data: "data/popsoft.json",
       back: "popsoft.html",
+      iaId: "popsoft-magazine_202403",
       node: "https://ia801608.us.archive.org/view_archive.php",
       dir: "/0/items/popsoft-magazine_202403/",
       iaPage: "https://archive.org/details/popsoft-magazine_202403"
@@ -14,6 +15,7 @@
       label: "掌机迷",
       data: "data/zjimi.json",
       back: "zjimi.html",
+      iaId: "pocketgamer",
       node: "https://ia800402.us.archive.org/view_archive.php",
       dir: "/35/items/pocketgamer/",
       iaPage: "https://archive.org/details/pocketgamer"
@@ -22,6 +24,7 @@
       label: "口袋迷",
       data: "data/koudaimi.json",
       back: "koudaimi.html",
+      iaId: "gamebooks_mhsg",
       node: "https://ia600500.us.archive.org/view_archive.php",
       dir: "/24/items/gamebooks_mhsg/",
       iaPage: "https://archive.org/details/gamebooks_mhsg"
@@ -46,16 +49,22 @@
 
   function $(id) { return document.getElementById(id); }
 
-  function pageUrl(n) {
+  function pageUrl(n, variant) {
     var base = item.path.replace(/\.pdf$/i, "");
     var name = base.split("/").pop();
     var outer = base.split("/").map(encodeURIComponent).join("/");
     var leaf = String(n - 1).padStart(4, "0");
     var member = encodeURIComponent(name + "_jp2/" + name + "_" + leaf + ".jp2");
-    var node = item.node ? "https://" + item.node + "/view_archive.php" : col.node;
-    var dir = item.dir || col.dir;
-    return node + "?archive=" + dir + outer + "_jp2.zip&file=" + member + "&ext=jpg";
+    var iaId = item.ia_id || col.iaId;
+    if (variant === "node") {
+      var node = item.node ? "https://" + item.node + "/view_archive.php" : col.node;
+      var dir = item.dir || col.dir;
+      return node + "?archive=" + dir + outer + "_jp2.zip&file=" + member + "&ext=jpg";
+    }
+    return "https://archive.org/download/" + iaId + "/" + outer + "_jp2.zip/" + member + "&ext=jpg";
   }
+
+  var urlVariant = "redirect";
 
   function show(n) {
     if (!item || n < 1 || n > pageCount) return;
@@ -66,9 +75,10 @@
     st.style.display = "";
     st.querySelector(".msg").textContent = "第 " + n + " / " + pageCount + " 页加载中……";
     img.style.display = "none";
-    img.src = pageUrl(n);
+    img.dataset.tried = "";
+    img.src = pageUrl(n, urlVariant);
     [n + 1, n + 2].forEach(function (k) {
-      if (k <= pageCount) { var p = new Image(); p.src = pageUrl(k); }
+      if (k <= pageCount) { var p = new Image(); p.src = pageUrl(k, urlVariant); }
     });
   }
 
@@ -98,6 +108,13 @@
       img.classList.add("flip-enter");
     });
     img.addEventListener("error", function () {
+      // 先试 download 重定向，失败后换节点直连再试一次
+      if (urlVariant === "redirect" && !img.dataset.tried) {
+        img.dataset.tried = "node";
+        urlVariant = "node";
+        img.src = pageUrl(pageNum, "node");
+        return;
+      }
       var st = $("rd-status");
       st.style.display = "";
       st.querySelector(".msg").textContent = "第 " + pageNum + " 页加载失败，可尝试下一页或下载原版。";

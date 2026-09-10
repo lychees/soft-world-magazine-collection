@@ -11,6 +11,8 @@
   var DL_BASE = "https://github.com/lychees/soft-world-magazine-collection/releases/download/magazines/";
   var IA_NODE = "https://ia601800.us.archive.org/view_archive.php";
   var IA_DIR = "/35/items/soft-world-magazine-collection/";
+  var IA_ID = "soft-world-magazine-collection";
+  var iaVariant = "redirect";
 
   var item = null, mode = null;
 
@@ -142,13 +144,16 @@
   /* ================= IA 图片模式 ================= */
   var iaImg;
 
-  function iaPageUrl(n) {
+  function iaPageUrl(n, variant) {
     var base = item.ia_path.replace(/\.pdf$/i, "");
     var name = base.split("/").pop();
     var outer = base.split("/").map(encodeURIComponent).join("/");
     var leaf = String(n - 1).padStart(4, "0");
     var member = encodeURIComponent(name + "_jp2/" + name + "_" + leaf + ".jp2");
-    return IA_NODE + "?archive=" + IA_DIR + outer + "_jp2.zip&file=" + member + "&ext=jpg";
+    if (variant === "node") {
+      return IA_NODE + "?archive=" + IA_DIR + outer + "_jp2.zip&file=" + member + "&ext=jpg";
+    }
+    return "https://archive.org/download/" + IA_ID + "/" + outer + "_jp2.zip/" + member + "&ext=jpg";
   }
 
   function iaLayout() {
@@ -167,9 +172,10 @@
     pageNum = n;
     $("pg").value = n;
     status("第 " + n + " / " + pageCount + " 页加载中……");
-    iaImg.src = iaPageUrl(n);
+    iaImg.dataset.tried = "";
+    iaImg.src = iaPageUrl(n, iaVariant);
     [n + 1, n + 2].forEach(function (k) {
-      if (k <= pageCount) { var p = new Image(); p.src = iaPageUrl(k); }
+      if (k <= pageCount) { var p = new Image(); p.src = iaPageUrl(k, iaVariant); }
     });
   }
 
@@ -238,6 +244,12 @@
       iaImg.classList.add("flip-enter");
     });
     iaImg.addEventListener("error", function () {
+      if (iaVariant === "redirect" && !iaImg.dataset.tried) {
+        iaImg.dataset.tried = "node";
+        iaVariant = "node";
+        iaImg.src = iaPageUrl(pageNum, "node");
+        return;
+      }
       status("第 " + pageNum + " 页加载失败，可尝试下一页或下载原版。");
     });
     iaImg.addEventListener("click", function () { go(1); });
