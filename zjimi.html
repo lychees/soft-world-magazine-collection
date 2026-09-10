@@ -89,7 +89,7 @@ window.MAGCAT = {
   covers: "covers-zjimi/",
   readerCol: "zjimi",
   groupOf: function (it) {
-    if (it.type === "副刊") return { key: "sp", title: "副刊", short: "副刊" };
+    if (it.type === "副刊") return { key: "zz-sp", title: "副刊", short: "副刊" };
     var v = it.vol || 0;
     var lo = Math.floor((v - 1) / 30) * 30 + 1, hi = lo + 29;
     return { key: "v" + lo, title: "Vol." + String(lo).padStart(3, "0") + "–" + String(hi).padStart(3, "0"),
