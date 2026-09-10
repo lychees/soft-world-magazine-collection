@@ -1,7 +1,7 @@
 # 软体世界杂志收藏 · SoftWorld Magazine Archive
 
 《軟體世界》（1989–2006，智冠科技）杂志文献资料整理与在线阅读网站。
-另设 10 个姐妹馆藏（扫描文件由 archive.org 托管）。
+另设 13 个姐妹馆藏（扫描文件由 archive.org 托管）。
 
 **在线访问**：https://lychees.github.io/soft-world-magazine-collection/
 
@@ -11,17 +11,20 @@
 | --- | --- | --- | --- |
 | [《軟體世界》](https://lychees.github.io/soft-world-magazine-collection/) | 1987–2006 | 232 | 本站 GitHub Release 原版下载 + 站内/archive.org 阅读 |
 | [《大众软件》](https://lychees.github.io/soft-world-magazine-collection/popsoft.html) | 1995–2016 | 518 | archive.org |
-| [《电子游戏软件》](https://lychees.github.io/soft-world-magazine-collection/dianruan.html) | 1994–2009 | 282 | archive.org |
+| [《电子游戏软件》](https://lychees.github.io/soft-world-magazine-collection/dianruan.html) | 1994–2009 | 322 | archive.org |
 | [《家用电脑与游戏机》](https://lychees.github.io/soft-world-magazine-collection/jiayou.html) | 1994–2003 | 86 | archive.org |
 | [《电子游戏与电脑游戏》](https://lychees.github.io/soft-world-magazine-collection/diandian.html) | 1996–2003 | 98 | archive.org |
-| [《游戏机实用技术》](https://lychees.github.io/soft-world-magazine-collection/ucg.html) | 2004–2019 | 154 | archive.org |
+| [《游戏机实用技术》](https://lychees.github.io/soft-world-magazine-collection/ucg.html) | 1998–2019 | 412 | archive.org |
 | [《掌机迷》](https://lychees.github.io/soft-world-magazine-collection/zjimi.html) | 2003–2011 | 134 | archive.org |
 | [《游戏日》](https://lychees.github.io/soft-world-magazine-collection/gameday.html) | 2002–2008 | 85 | archive.org |
 | [《軟體之星》](https://lychees.github.io/soft-world-magazine-collection/softstar.html) | 1989–1997 | 32 | archive.org |
 | [《掌机王》](https://lychees.github.io/soft-world-magazine-collection/zhangjiwang.html) | — | 9 | archive.org |
+| [《口袋玩家》](https://lychees.github.io/soft-world-magazine-collection/pkmplayer.html) | — | 33 | archive.org |
+| [《电脑爱好者》](https://lychees.github.io/soft-world-magazine-collection/cfan.html) | 1993–2022 | 192 | archive.org |
+| [《微型计算机》](https://lychees.github.io/soft-world-magazine-collection/mic.html) | 2008–2016 | 124 | archive.org |
 | [《口袋迷》](https://lychees.github.io/soft-world-magazine-collection/koudaimi.html) | — | 9 | archive.org（非全刊） |
 
-共 **1,639 册**，全部提供在线阅读。
+共 **2,286 册**，绝大多数提供在线阅读（47 册无衍生档仅提供下载）。
 
 ## 《軟體世界》馆藏说明
 
@@ -35,7 +38,7 @@
 ## 站点结构
 
 ```
-index.html          首页（軟體世界：杂志百科、编年、馆藏目录、姐妹馆藏网格）
+index.html          首页（軟體世界：杂志百科、编年、馆藏目录、姐妹馆藏网格、全站搜索）
 popsoft.html        《大众软件》馆藏目录
 dianruan.html       《电子游戏软件》馆藏目录
 jiayou.html         《家用电脑与游戏机》馆藏目录
@@ -45,11 +48,14 @@ zjimi.html          《掌机迷》馆藏目录
 gameday.html        《游戏日》馆藏目录
 softstar.html       《軟體之星》馆藏目录
 zhangjiwang.html    《掌机王》馆藏目录
+pkmplayer.html      《口袋玩家》馆藏目录
+cfan.html           《电脑爱好者》馆藏目录
+mic.html            《微型计算机》馆藏目录
 koudaimi.html       《口袋迷》馆藏目录
 reader.html         軟體世界在线阅读器（PDF.js 本地 + archive.org 图片，?id=<期号>）
 ia-reader.html      通用 archive.org 图片阅读器（?col=<馆藏>&id=<id>）
 about.html          关于与版权说明
-assets/             样式、脚本、本地化的 PDF.js、翻页动画
+assets/             样式、脚本、本地化的 PDF.js、翻页动画、进度记忆
 data/               各馆藏元数据 JSON
 covers*/            各馆藏封面缩略图
 pdfs/<id>.pdf       軟體世界在线阅读版（81 册）

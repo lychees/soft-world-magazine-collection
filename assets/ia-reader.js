@@ -43,7 +43,13 @@
     softstar: { label: "軟體之星", data: "data/softstar.json", back: "softstar.html",
       iaPage: "https://archive.org/details/softstarmagazine" },
     zhangjiwang: { label: "掌机王", data: "data/zhangjiwang.json", back: "zhangjiwang.html",
-      iaPage: "https://archive.org/details/king-of-pocketgames-magazine" }
+      iaPage: "https://archive.org/details/king-of-pocketgames-magazine" },
+    pkmplayer: { label: "口袋玩家", data: "data/pkmplayer.json", back: "pkmplayer.html",
+      iaPage: "https://archive.org/details/pkmplayer_magazine_zh" },
+    cfan: { label: "电脑爱好者", data: "data/cfan.json", back: "cfan.html",
+      iaPage: "https://archive.org/details/2005_20220814" },
+    mic: { label: "微型计算机", data: "data/mic.json", back: "mic.html",
+      iaPage: "https://archive.org/details/mic2008-2011" }
   };
 
   var col = null, item = null, colKey = null;

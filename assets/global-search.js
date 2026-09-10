@@ -11,7 +11,10 @@
     { key: "gameday", label: "游戏日", data: "data/gameday.json", covers: "covers-gameday/", reader: function (id) { return "ia-reader.html?col=gameday&id=" + encodeURIComponent(id); } },
     { key: "softstar", label: "軟體之星", data: "data/softstar.json", covers: "covers-softstar/", reader: function (id) { return "ia-reader.html?col=softstar&id=" + encodeURIComponent(id); } },
     { key: "zhangjiwang", label: "掌机王", data: "data/zhangjiwang.json", covers: "covers-zhangjiwang/", reader: function (id) { return "ia-reader.html?col=zhangjiwang&id=" + encodeURIComponent(id); } },
-    { key: "koudaimi", label: "口袋迷", data: "data/koudaimi.json", covers: "covers-koudaimi/", reader: function (id) { return "ia-reader.html?col=koudaimi&id=" + encodeURIComponent(id); } }
+    { key: "koudaimi", label: "口袋迷", data: "data/koudaimi.json", covers: "covers-koudaimi/", reader: function (id) { return "ia-reader.html?col=koudaimi&id=" + encodeURIComponent(id); } },
+    { key: "pkmplayer", label: "口袋玩家", data: "data/pkmplayer.json", covers: "covers-pkmplayer/", reader: function (id) { return "ia-reader.html?col=pkmplayer&id=" + encodeURIComponent(id); } },
+    { key: "cfan", label: "电脑爱好者", data: "data/cfan.json", covers: "covers-cfan/", reader: function (id) { return "ia-reader.html?col=cfan&id=" + encodeURIComponent(id); } },
+    { key: "mic", label: "微型计算机", data: "data/mic.json", covers: "covers-mic/", reader: function (id) { return "ia-reader.html?col=mic&id=" + encodeURIComponent(id); } }
   ];
 
   var loaded = null;

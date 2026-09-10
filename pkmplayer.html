@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>《口袋玩家》杂志文献资料 · 《軟體世界》杂志文献资料库</title>
+<meta name="description" content="《口袋玩家》杂志文献资料整理与在线阅读：Vol.58–96 共 33 册，由 archive.org 提供文件托管。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="covers-pkmplayer/pkm-058.jpg">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="title">軟體世界</span>
+      <span class="sub">杂志文献资料库</span>
+    </a>
+    <nav class="site-nav">
+      <a href="index.html">軟體世界</a>
+      <a href="popsoft.html">大众软件</a>
+      <a href="zjimi.html">掌机迷</a>
+      <a href="koudaimi.html">口袋迷</a>
+      <a href="index.html#collections">更多馆藏</a>
+      <a href="about.html">关于</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <h1>《口袋玩家》杂志文献资料</h1>
+    <p class="lead">
+      《口袋玩家》是一本宝可梦主题杂志，内容以宝可梦游戏攻略、图鉴资料与周边文化为主。
+      本站整理 archive.org 收藏的 Vol.58–96 共 <b>33 册</b>（缺 Vol.1–57、82、86、93、95），
+      全部提供在线阅读，文件由 archive.org 托管。
+    </p>
+    <div class="stats">
+      <div class="stat"><b id="st-issues">–</b><span>馆藏册数</span></div>
+      <div class="stat"><b id="st-pages">–</b><span>总页数</span></div>
+      <div class="stat"><b id="st-size">–</b><span>文件体积</span></div>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section class="block">
+    <h2 class="sec">杂志简介</h2>
+    <div class="prose wiki-box">
+      <p>《口袋玩家》以宝可梦（口袋妖怪）系列为核心，包含游戏攻略、战术研究、图鉴资料与读者互动内容，
+        是 2000 年代国内宝可梦爱好者的主要读物之一。</p>
+      <p class="attribution">
+        扫描文件托管于 <a href="https://archive.org/details/pkmplayer_magazine_zh" target="_blank" rel="noopener">archive.org</a>；
+        杂志内容版权归原出版方及相关权利人所有，本站仅供学习研究使用。
+      </p>
+    </div>
+  </section>
+
+  <section class="block" id="catalog">
+    <h2 class="sec">馆藏目录</h2>
+    <div class="filterbar">
+      <input type="search" id="search" placeholder="搜索期号…">
+      <span class="chip on" data-type="全部">全部</span>
+      <span class="chip" data-type="正刊">正刊</span>
+    </div>
+    <div class="yearnav" id="yearnav"></div>
+    <div id="catalog-list"><p style="color:var(--ink-soft)">目录加载中……</p></div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p>《口袋玩家》杂志内容版权归原出版方及相关权利人所有，本站为民间收藏整理项目，仅供学习研究使用；扫描文件由 archive.org 托管。</p>
+    <p><a href="index.html">《軟體世界》馆藏</a> ·
+      <a href="https://github.com/lychees/soft-world-magazine-collection" target="_blank" rel="noopener">项目仓库</a>
+    </p>
+  </div>
+</footer>
+
+<script src="assets/progress.js"></script>
+<script>
+window.MAGCAT = {
+  iaId: "pkmplayer_magazine_zh",
+  data: "data/pkmplayer.json",
+  covers: "covers-pkmplayer/",
+  readerCol: "pkmplayer",
+  groupOf: function (it) {
+    var v = it.vol || 0;
+    var lo = Math.floor((v - 1) / 10) * 10 + 1, hi = lo + 9;
+    return { key: "v" + lo, title: "Vol." + lo + "–" + hi, short: lo + "–" + hi };
+  }
+};
+</script>
+<script src="assets/mag-catalog.js"></script>
+</body>
+</html>
