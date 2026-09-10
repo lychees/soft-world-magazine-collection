@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>册目详情 · 《軟體世界》杂志文献资料库</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="covers/sw-001.jpg">
+<style>
+.issue-hero { display: flex; gap: 28px; align-items: flex-start; flex-wrap: wrap; }
+.issue-hero .cov { flex: 0 0 auto; width: 280px; max-width: 60vw; }
+.issue-hero .cov img { width: 100%; border-radius: 8px; box-shadow: var(--shadow); display: block; }
+.issue-info { flex: 1; min-width: 260px; }
+.issue-info h1 { font-family: "Noto Serif TC", "Songti TC", "PMingLiU", "SimSun", serif; font-size: 28px; margin: 0 0 10px; }
+.issue-info dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; margin: 0 0 18px; }
+.issue-info dt { color: var(--ink-soft); }
+.issue-info dd { margin: 0; }
+.issue-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+#fav.on { color: #d4a017; border-color: #d4a017; }
+#neighbors { display: flex; gap: 10px; margin-top: 26px; }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="title">軟體世界</span>
+      <span class="sub">杂志文献资料库</span>
+    </a>
+    <nav class="site-nav">
+      <a href="index.html">軟體世界</a>
+      <a href="popsoft.html">大众软件</a>
+      <a href="zjimi.html">掌机迷</a>
+      <a href="koudaimi.html">口袋迷</a>
+      <a href="index.html#collections">更多馆藏</a>
+      <a href="shelf.html">书架</a>
+      <a href="stats.html">统计</a>
+      <a href="about.html">关于</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="block">
+    <div class="issue-hero">
+      <div class="cov"><img id="cover" alt="封面"></div>
+      <div class="issue-info">
+        <h1 id="ititle">加载中……</h1>
+        <p><a id="col-label" href="#">馆藏</a></p>
+        <dl id="meta"></dl>
+        <div class="issue-actions">
+          <a class="btn read" id="read" href="#" style="flex:0 0 auto; padding:8px 22px;">开始阅读 →</a>
+          <a class="btn dl" id="ia" href="#" target="_blank" rel="noopener">原版 / archive.org</a>
+          <button class="btn dl" id="fav" type="button" style="cursor:pointer;">♡ 加入书架</button>
+          <a class="btn dl" id="back-col" href="#">返回目录</a>
+        </div>
+        <div id="neighbors"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p><a href="index.html">《軟體世界》馆藏</a> ·
+      <a href="https://github.com/lychees/soft-world-magazine-collection" target="_blank" rel="noopener">项目仓库</a>
+    </p>
+  </div>
+</footer>
+
+<script src="assets/collections.js"></script>
+<script src="assets/favs.js"></script>
+<script src="assets/progress.js"></script>
+<script src="assets/issue.js"></script>
+</body>
+</html>

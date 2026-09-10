@@ -33,11 +33,14 @@
     c.dataset.key = (it.title + " " + it.id + " " + (it.issue != null ? it.issue : "")).toLowerCase();
 
     var cov = el("div", "cov");
+    var link = el("a");
+    link.href = "issue.html?col=sw&id=" + encodeURIComponent(it.id);
     var img = new Image();
     img.loading = "lazy";
     img.alt = it.title + " 封面";
     img.src = "covers/" + it.id + ".jpg";
-    cov.appendChild(img);
+    link.appendChild(img);
+    cov.appendChild(link);
     cov.appendChild(el("span", "badge" + (it.reading || it.ia_path ? "" : " dl"),
                        it.reading || it.ia_path ? "在线阅读" : "提供下载"));
     if (window.favButton) cov.appendChild(window.favButton("sw", it.id, it));

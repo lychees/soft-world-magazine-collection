@@ -26,11 +26,14 @@
     c.dataset.key = (it.title + " " + it.id + " " + (it.date || "")).toLowerCase();
 
     var cov = el("div", "cov");
+    var link = el("a");
+    link.href = "issue.html?col=popsoft&id=" + encodeURIComponent(it.id);
     var img = new Image();
     img.loading = "lazy";
     img.alt = it.title + " 封面";
     img.src = "covers-popsoft/" + it.id + ".jpg";
-    cov.appendChild(img);
+    link.appendChild(img);
+    cov.appendChild(link);
     cov.appendChild(el("span", "badge", "在线阅读"));
     if (window.favButton) cov.appendChild(window.favButton("popsoft", it.id, it));
     c.appendChild(cov);
