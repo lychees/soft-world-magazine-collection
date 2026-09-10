@@ -155,6 +155,25 @@ h2.sec {
 .colcard .cc-body { padding: 10px 12px 12px; }
 .colcard .cc-t { font-size: 15px; font-weight: 600; line-height: 1.4; }
 .colcard .cc-m { font-size: 12.5px; color: var(--ink-soft); margin-top: 3px; }
+
+/* ---------- 深色主题 ---------- */
+html.dark {
+  --paper: #1c1a17;
+  --paper-2: #26231f;
+  --ink: #e8e2d4;
+  --ink-soft: #a89f8c;
+  --accent: #c94f47;
+  --accent-dark: #9e2b25;
+  --navy: #7aa2d0;
+  --line: #45403a;
+  --card: #26231f;
+  --shadow: 0 1px 3px rgba(0, 0, 0, .5), 0 6px 18px rgba(0, 0, 0, .35);
+}
+html.dark .site-head {
+  background: linear-gradient(180deg, #14120f 0%, #201c18 100%);
+}
+html.dark img { filter: brightness(.92); }
+
 .site-foot { margin-top: 46px; border-top: 1px solid var(--line); background: var(--paper-2); }
 .site-foot .wrap { padding: 22px 20px 30px; font-size: 13.5px; color: var(--ink-soft); }
 .site-foot p { margin: 0 0 6px; }
