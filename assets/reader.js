@@ -157,6 +157,7 @@
     if (rendering) { pendingPair = k; return; }
     rendering = true;
     var pages = pairPages(k);
+    console.log("[renderPair] start", k, pages);
     Promise.all(pages.map(function (n) { return pdf.getPage(n); })).then(function (pgs) {
       var dpr = Math.min(window.devicePixelRatio || 1, 2);
       var bases = pgs.map(function (page) { return page.getViewport({ scale: 1 }); });
@@ -182,6 +183,7 @@
     }).then(function () {
       pairIdx = k;
       $("pg").value = pairPages(k)[0];
+      console.log("[renderPair] done", k);
       ["rd-canvas-l", "rd-canvas-r"].forEach(function (id) {
         var c = $(id);
         c.classList.remove("flip-enter");
@@ -192,6 +194,7 @@
       if (pendingPair != null) { var q = pendingPair; pendingPair = null; renderPair(q); }
     }).catch(function (e) {
       rendering = false;
+      console.log("[renderPair] fail", k, e && e.message);
       status("页面渲染失败：" + e.message);
     });
   }
