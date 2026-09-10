@@ -103,8 +103,11 @@ window.MAGCAT = {
   groupOf: function (it) {
     if (it.type === "试刊") return { key: "a-trial", title: "试刊（GAME集中营）", short: "试刊" };
     if (it.type === "合订本") return { key: "zz-bd", title: "合订本", short: "合订本" };
+    if (it.type === "增刊") return { key: "zz-sup", title: "增刊", short: "增刊" };
+    if (it.type === "特辑") return { key: "zz-sp", title: "特辑", short: "特辑" };
     var y = it.year || 0;
-    return { key: "y" + y, title: y + " 年", short: String(y) };
+    return y ? { key: "y" + y, title: y + " 年", short: String(y) }
+           : { key: "y0", title: "其他", short: "其他" };
   }
 };
 </script>

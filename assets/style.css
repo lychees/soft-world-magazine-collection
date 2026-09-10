@@ -220,4 +220,7 @@ html.dark img { filter: brightness(.92); }
   .brand .title { font-size: 23px; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
   .rd-thumbs { display: none !important; }
+  .rd-head button, .rd-head a.btnx { min-height: 38px; padding: 7px 12px; font-size: 14px; }
+  .rd-head input.pg { min-height: 38px; }
+  .rd-head select { min-height: 38px; }
 }

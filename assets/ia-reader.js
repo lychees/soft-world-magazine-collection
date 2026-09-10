@@ -262,6 +262,14 @@
       if (e.key === "End") gotoPage(pageCount);
     });
     var tx = null, stage = $("rd-stage");
+    // 左右两侧点按翻页（移动端友好）：左 30% 上一页，其余下一页
+    stage.addEventListener("click", function (e) {
+      if (e.target.closest("button, a, input, select")) return;
+      var r = stage.getBoundingClientRect();
+      var x = e.clientX - r.left;
+      if (x < r.width * 0.3) go(-1);
+      else go(1);
+    });
     stage.addEventListener("touchstart", function (e) { tx = e.touches[0].clientX; }, { passive: true });
     stage.addEventListener("touchend", function (e) {
       if (tx == null) return;
