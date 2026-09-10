@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>馆藏统计 · 《軟體世界》杂志文献资料库</title>
+<meta name="description" content="全部馆藏的数量、页数、体积与年代分布统计。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="covers/sw-001.jpg">
+<style>
+table.stats-tbl { border-collapse: collapse; width: 100%; background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; box-shadow: var(--shadow); }
+table.stats-tbl th, table.stats-tbl td { padding: 9px 14px; text-align: left; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+table.stats-tbl th { background: var(--paper-2); font-weight: 600; }
+table.stats-tbl td.num { text-align: right; font-variant-numeric: tabular-nums; }
+table.stats-tbl tr:last-child td { border-bottom: 0; }
+#year-chart { display: flex; align-items: flex-end; gap: 3px; height: 110px; padding: 10px 4px 0; overflow-x: auto; }
+#year-chart .bar-col { display: flex; flex-direction: column; align-items: center; flex: 0 0 auto; }
+#year-chart .bar { width: 18px; background: var(--accent); border-radius: 2px 2px 0 0; }
+#year-chart .bar-lab { font-size: 11px; color: var(--ink-soft); margin-top: 3px; }
+#type-chart .trow { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+#type-chart .tname { flex: 0 0 90px; font-size: 14px; }
+#type-chart .bar-h { height: 16px; background: var(--navy); border-radius: 3px; }
+#type-chart .tnum { font-size: 13px; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="title">軟體世界</span>
+      <span class="sub">杂志文献资料库</span>
+    </a>
+    <nav class="site-nav">
+      <a href="index.html">軟體世界</a>
+      <a href="popsoft.html">大众软件</a>
+      <a href="zjimi.html">掌机迷</a>
+      <a href="koudaimi.html">口袋迷</a>
+      <a href="index.html#collections">更多馆藏</a>
+      <a href="shelf.html">书架</a>
+      <a href="stats.html" class="on">统计</a>
+      <a href="about.html">关于</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="block">
+    <h2 class="sec">总量</h2>
+    <div class="stats">
+      <div class="stat"><b id="st-cols">–</b><span>馆藏数</span></div>
+      <div class="stat"><b id="st-issues">–</b><span>总册数</span></div>
+      <div class="stat"><b id="st-pages">–</b><span>总页数</span></div>
+      <div class="stat"><b id="st-size">–</b><span>总体积</span></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2 class="sec">各馆藏</h2>
+    <table class="stats-tbl">
+      <thead><tr><th>馆藏</th><th>年代</th><th style="text-align:right">册数</th><th style="text-align:right">页数</th><th style="text-align:right">体积</th></tr></thead>
+      <tbody id="col-tbody"></tbody>
+    </table>
+  </section>
+
+  <section class="block">
+    <h2 class="sec">年代分布</h2>
+    <div class="prose wiki-box"><div id="year-chart"></div></div>
+  </section>
+
+  <section class="block">
+    <h2 class="sec">类型分布</h2>
+    <div class="prose wiki-box"><div id="type-chart"></div></div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p><a href="index.html">《軟體世界》馆藏</a> ·
+      <a href="https://github.com/lychees/soft-world-magazine-collection" target="_blank" rel="noopener">项目仓库</a>
+    </p>
+  </div>
+</footer>
+
+<script src="assets/collections.js"></script>
+<script src="assets/stats.js"></script>
+</body>
+</html>
