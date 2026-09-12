@@ -57,6 +57,29 @@
     return s;
   }
 
+  /* 常用繁简映射（OCR 文本多为简体） */
+  var TS = {
+    "軟": "软", "體": "体", "劍": "剑", "俠": "侠", "傳": "传", "龍": "龙", "戰": "战", "鬥": "斗",
+    "國": "国", "遊": "游", "戲": "戏", "樂": "乐", "記": "记", "冊": "册", "畫": "画", "圖": "图",
+    "軒": "轩", "雲": "云", "話": "话", "題": "题", "紀": "纪", "錄": "录", "榮": "荣", "耀": "耀",
+    "風": "风", "雙": "双", "劇": "剧", "場": "场", "廳": "厅", "臺": "台", "灣": "湾", "島": "岛",
+    "電": "电", "腦": "脑", "機": "机", "會": "会", "誌": "志", "雜": "杂", "書": "书", "報": "报",
+    "導": "导", "讀": "读", "寫": "写", "聽": "听", "說": "说", "見": "见", "現": "现", "發": "发",
+    "開": "开", "關": "关", "門": "门", "問": "问", "答": "答", "點": "点", "擊": "击", "殺": "杀",
+    "敵": "敌", "軍": "军", "隊": "队", "員": "员", "長": "长", "師": "师", "專": "专", "屬": "属",
+    "於": "于", "與": "与", "為": "为", "這": "这", "那": "那", "裡": "里", "後": "后", "時": "时",
+    "間": "间", "號": "号", "網": "网", "絡": "络", "線": "线", "區": "区", "鎮": "镇"
+  };
+
+  function toSimplified(s) {
+    var out = "";
+    for (var i = 0; i < s.length; i++) {
+      var c = s[i];
+      out += TS[c] || c;
+    }
+    return out;
+  }
+
   function doSearch(q) {
     var terms = q.trim().toLowerCase().split(/\s+/).filter(Boolean);
     if (!terms.length || !index) return [];
@@ -69,7 +92,9 @@
         var ok = true;
         for (var t = 0; t < terms.length; t++) {
           var term = terms[t];
-          if (low.indexOf(term) < 0 && lowFlat.indexOf(term.replace(/\s+/g, "")) < 0) { ok = false; break; }
+          var termFlat = term.replace(/\s+/g, "");
+          if (low.indexOf(term) < 0 && lowFlat.indexOf(termFlat) < 0 &&
+              lowFlat.indexOf(toSimplified(termFlat)) < 0) { ok = false; break; }
         }
         if (ok) out.push({ id: iid, page: i + 1, text: pages[i] });
         if (out.length >= 400) return out;
