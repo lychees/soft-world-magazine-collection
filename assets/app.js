@@ -131,13 +131,13 @@
       return sec;
     }
     function renderMore() {
+      if (!sentinel.parentNode) cat.appendChild(sentinel);
       var batch = 3;
       while (rendered < groups.length && batch-- > 0) {
         cat.insertBefore(renderGroup(groups[rendered]), sentinel);
         rendered++;
       }
-      if (rendered < groups.length && !cat.contains(sentinel)) cat.appendChild(sentinel);
-      else if (rendered >= groups.length && sentinel.parentNode) sentinel.parentNode.removeChild(sentinel);
+      if (rendered >= groups.length && sentinel.parentNode) sentinel.parentNode.removeChild(sentinel);
     }
     renderMore();
     if ("IntersectionObserver" in window) {
