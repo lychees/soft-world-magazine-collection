@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>全文检索 · 《軟體世界》杂志文献资料库</title>
+<meta name="description" content="在《軟體世界》全部 232 册扫描文本中按页检索（OCR 全文索引）。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="covers/sw-001.jpg">
+<style>
+.ftx-issue { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; margin-bottom: 14px; box-shadow: var(--shadow); }
+.ftx-issue-head { display: flex; gap: 12px; align-items: center; margin-bottom: 8px; }
+.ftx-issue-head img { width: 46px; border-radius: 4px; }
+.ftx-issue-title b { font-size: 16px; }
+.ftx-pages { display: flex; flex-direction: column; gap: 4px; }
+.ftx-page { display: block; font-size: 13.5px; line-height: 1.5; text-decoration: none; color: var(--navy); }
+.ftx-page:hover { text-decoration: underline; }
+.ftx-page b { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 6px; }
+.ftx-page mark { background: #ffe58a; padding: 0 1px; border-radius: 2px; }
+html.dark .ftx-page mark { background: #6b5618; color: #ffe9a8; }
+.searchbar { display: flex; gap: 10px; margin-bottom: 18px; }
+.searchbar input { flex: 1; padding: 10px 14px; font-size: 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--ink); }
+.searchbar button { padding: 10px 24px; font-size: 16px; background: var(--accent); color: #fff; border: 0; border-radius: 8px; cursor: pointer; }
+#ftx-status { color: var(--ink-soft); font-size: 14px; margin-bottom: 12px; }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="title">軟體世界</span>
+      <span class="sub">杂志文献资料库</span>
+    </a>
+    <nav class="site-nav">
+      <a href="index.html">軟體世界</a>
+      <a href="popsoft.html">大众软件</a>
+      <a href="zjimi.html">掌机迷</a>
+      <a href="koudaimi.html">口袋迷</a>
+      <a href="index.html#collections">更多馆藏</a>
+      <a href="shelf.html">书架</a>
+      <a href="stats.html">统计</a>
+      <a href="ftx.html" class="on">全文检索</a>
+      <a href="about.html">关于</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="block">
+    <h2 class="sec">全文检索（軟體世界）</h2>
+    <p class="prose" style="color:var(--ink-soft); margin:0 0 14px;">在《軟體世界》全部 232 册扫描文本（OCR）中按页检索。多个关键词为「与」关系（空格分隔）。索引约 20MB，首次加载需要一些时间。</p>
+    <div class="searchbar">
+      <input id="q" type="search" placeholder="输入关键词，如：仙劍奇俠傳、光榮、勇者鬥惡龍…">
+      <button id="go">检索</button>
+    </div>
+    <div id="ftx-status"></div>
+    <div id="results"></div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p><a href="index.html">《軟體世界》馆藏</a> ·
+      <a href="https://github.com/lychees/soft-world-magazine-collection" target="_blank" rel="noopener">项目仓库</a>
+    </p>
+  </div>
+</footer>
+
+<script src="assets/ftx.js"></script>
+</body>
+</html>
