@@ -23,6 +23,7 @@
   <span><input class="pg" id="pg" value="1"> <span id="pgtotal"></span></span>
   <button id="next" title="下一页（→）">下一页 ›</button>
   <button id="mode" title="单页/双页对开切换">双页</button>
+  <button id="thumbs" title="页面缩略图">缩略图</button>
   <button id="bm" title="书签">☆</button>
   <button id="fs" title="全屏阅读">全屏</button>
   <button id="share" title="复制当前页分享链接">分享</button>
@@ -33,7 +34,9 @@
   <a class="btnx" id="back" href="#">返回目录</a>
 </div>
 
-<div class="rd-stage" id="rd-stage" style="min-height: calc(100vh - 52px)">
+<div class="rd-body">
+  <div class="rd-thumbs" id="rd-thumbs"></div>
+  <div class="rd-stage" id="rd-stage" style="min-height: calc(100vh - 52px)">
   <div class="rd-status" id="rd-status">
     <div class="msg">正在加载……</div>
   </div>

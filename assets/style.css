@@ -216,8 +216,8 @@ html.dark .fav-btn.on { color: #e6b93d; background: rgba(64, 52, 20, .95); borde
   flex-direction: column; gap: 10px; max-height: calc(100vh - 52px);
 }
 .rd-thumbs.open { display: flex; }
-.rd-thumbs canvas { width: 100%; border: 2px solid transparent; cursor: pointer; display: block; }
-.rd-thumbs canvas.cur { border-color: var(--accent); }
+.rd-thumbs canvas, .rd-thumbs img { width: 100%; border: 2px solid transparent; cursor: pointer; display: block; }
+.rd-thumbs canvas.cur, .rd-thumbs img.cur { border-color: var(--accent); }
 .rd-stage {
   flex: 1; overflow: auto; display: flex; flex-direction: column; align-items: center;
   padding: 22px 12px 60px; background: #4a463f;

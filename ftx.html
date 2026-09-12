@@ -48,8 +48,10 @@ html.dark .ftx-page mark { background: #6b5618; color: #ffe9a8; }
 
 <main class="wrap">
   <section class="block">
-    <h2 class="sec">全文检索（軟體世界）</h2>
-    <p class="prose" style="color:var(--ink-soft); margin:0 0 14px;">在《軟體世界》全部 232 册扫描文本（OCR）中按页检索。多个关键词为「与」关系（空格分隔）。索引约 20MB，首次加载需要一些时间。</p>
+    <h2 class="sec">全文检索</h2>
+    <div id="col-tabs" style="margin-bottom:14px;"></div>
+    <div id="history" style="margin-bottom:12px;"></div>
+    <p class="prose" style="color:var(--ink-soft); margin:0 0 14px;">在馆藏的扫描文本（OCR）中按页检索。多个关键词为「与」关系（空格分隔）。索引较大，首次加载需要一些时间。</p>
     <div class="searchbar">
       <input id="q" type="search" placeholder="输入关键词，如：仙劍奇俠傳、光榮、勇者鬥惡龍…">
       <button id="go">检索</button>

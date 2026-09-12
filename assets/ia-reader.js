@@ -119,6 +119,39 @@
     });
   }
 
+  var thumbsBuilt = false;
+  function buildThumbs() {
+    if (thumbsBuilt) return;
+    thumbsBuilt = true;
+    var box = $("rd-thumbs");
+    for (var n = 1; n <= pageCount; n++) {
+      (function (pg) {
+        var im = new Image();
+        im.loading = "lazy";
+        im.dataset.pg = pg;
+        im.title = "第 " + pg + " 页";
+        im.src = pageUrl(pg, urlVariant);
+        im.addEventListener("click", function () { gotoPage(pg); });
+        im.addEventListener("error", function () {
+          if (urlVariant === "redirect") {
+            urlVariant = "node";
+            im.src = pageUrl(pg, "node");
+          }
+        });
+        box.appendChild(im);
+      })(n);
+    }
+  }
+
+  function paintThumbs() {
+    var box = $("rd-thumbs");
+    if (!box || !box.children.length) return;
+    var cur = box.querySelector("img.cur");
+    if (cur) cur.classList.remove("cur");
+    var t = box.children[pageNum - 1];
+    if (t) { t.classList.add("cur"); t.scrollIntoView({ block: "nearest" }); }
+  }
+
   /* ---------- 双页对开 ---------- */
   function maxPair() { return Math.max(0, Math.floor(pageCount / 2)); }
   function pairPages(k) {
@@ -178,6 +211,7 @@
     $("pg").value = n;
     if (window.Progress) window.Progress.save(colKey, item.id, n);
     bmPaint();
+    paintThumbs();
     var img = $("rd-img");
     status("第 " + n + " / " + pageCount + " 页加载中……");
     img.style.display = "none";
@@ -285,6 +319,25 @@
 
     $("prev").addEventListener("click", function () { go(-1); });
     $("next").addEventListener("click", function () { go(1); });
+    // 长按连续翻页
+    function holdRepeat(btn, d) {
+      var timer = null;
+      function start(e) {
+        e.preventDefault();
+        go(d);
+        timer = setInterval(function () { go(d); }, 380);
+      }
+      function stop() {
+        if (timer) { clearInterval(timer); timer = null; }
+      }
+      btn.addEventListener("mousedown", start);
+      btn.addEventListener("touchstart", start, { passive: false });
+      ["mouseup", "mouseleave", "touchend", "touchcancel"].forEach(function (ev) {
+        btn.addEventListener(ev, stop);
+      });
+    }
+    holdRepeat($("prev"), -1);
+    holdRepeat($("next"), 1);
     $("pg").addEventListener("change", function () {
       var n = parseInt($("pg").value, 10);
       if (!isNaN(n)) gotoPage(n);
@@ -294,6 +347,10 @@
       $("zoom").textContent = fit === "width" ? "适应宽度" : "原始尺寸";
       document.body.classList.toggle("zoom-full", fit === "full");
       if (window.Zoom) window.Zoom.save(colKey, item.id, fit);
+    });
+    $("thumbs").addEventListener("click", function () {
+      $("rd-thumbs").classList.toggle("open");
+      if ($("rd-thumbs").classList.contains("open")) buildThumbs();
     });
     $("mode").addEventListener("click", function () { setMode(!spread); });
     $("bm").addEventListener("click", function () {

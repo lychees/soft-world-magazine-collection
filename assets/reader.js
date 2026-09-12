@@ -475,6 +475,25 @@
 
     $("prev").addEventListener("click", function () { go(-1); });
     $("next").addEventListener("click", function () { go(1); });
+    // 长按连续翻页
+    function holdRepeat(btn, d) {
+      var timer = null;
+      function start(e) {
+        e.preventDefault();
+        go(d);
+        timer = setInterval(function () { go(d); }, 380);
+      }
+      function stop() {
+        if (timer) { clearInterval(timer); timer = null; }
+      }
+      btn.addEventListener("mousedown", start);
+      btn.addEventListener("touchstart", start, { passive: false });
+      ["mouseup", "mouseleave", "touchend", "touchcancel"].forEach(function (ev) {
+        btn.addEventListener(ev, stop);
+      });
+    }
+    holdRepeat($("prev"), -1);
+    holdRepeat($("next"), 1);
     $("mode").addEventListener("click", function () { setMode(!spread); });
     $("bm").addEventListener("click", function () {
       if (!window.Bookmarks) return;
