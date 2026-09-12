@@ -65,9 +65,11 @@
       var pages = index[iid];
       for (var i = 0; i < pages.length; i++) {
         var low = pages[i].toLowerCase();
+        var lowFlat = low.replace(/\s+/g, "");
         var ok = true;
         for (var t = 0; t < terms.length; t++) {
-          if (low.indexOf(terms[t]) < 0) { ok = false; break; }
+          var term = terms[t];
+          if (low.indexOf(term) < 0 && lowFlat.indexOf(term.replace(/\s+/g, "")) < 0) { ok = false; break; }
         }
         if (ok) out.push({ id: iid, page: i + 1, text: pages[i] });
         if (out.length >= 400) return out;
