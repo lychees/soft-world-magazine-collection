@@ -27,6 +27,12 @@
     img.loading = "lazy";
     img.alt = it.title + " 封面";
     img.src = CFG.covers + it.id + ".jpg";
+    if (CFG.coverFallback) {
+      img.onerror = function () {
+        img.onerror = null;
+        img.src = CFG.coverFallback;
+      };
+    }
     link.appendChild(img);
     cov.appendChild(link);
     cov.appendChild(el("span", "badge" + (it.reading === false ? " dl" : ""), it.reading === false ? "提供下载" : "在线阅读"));
