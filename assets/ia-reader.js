@@ -56,6 +56,10 @@
       iaPage: "https://archive.org/details/popular-computer-weekly" },
     dnly: { label: "电脑乐园游戏攻略", data: "data/dnly.json", back: "dnly.html",
       iaPage: "https://archive.org/details/dnly-yxgl_magazine_zh" },
+    dngi: { label: "电脑乐园·游戏情报", data: "data/dngi.json", back: "dngi.html",
+      iaPage: "https://archive.org/details/gameguide-magazine-chs" },
+    dnapp: { label: "电脑乐园·APP评测", data: "data/dnapp.json", back: "dnapp.html",
+      iaPage: "https://archive.org/details/app-magazine-chs" },
     mntx: { label: "模拟天下", data: "data/mntx.json", back: "mntx.html",
       iaPage: "https://archive.org/details/20220106_20220106_2035" }
   };

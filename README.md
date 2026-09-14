@@ -24,11 +24,13 @@
 | [《微型计算机》](https://lychees.github.io/soft-world-magazine-collection/mic.html) | 2008–2016 | 124 | archive.org |
 | [《电脑报》](https://lychees.github.io/soft-world-magazine-collection/dnb.html) | 2012–2021 | 453 | archive.org（提供下载） |
 | [《电脑乐园游戏攻略》](https://lychees.github.io/soft-world-magazine-collection/dnly.html) | 2010–2015 | 85 | archive.org |
+| [《电脑乐园·游戏情报》](https://lychees.github.io/soft-world-magazine-collection/dngi.html) | 2013 | 9 | archive.org |
+| [《电脑乐园·APP评测》](https://lychees.github.io/soft-world-magazine-collection/dnapp.html) | 2013–2015 | 22 | archive.org |
 | [《模拟天下》](https://lychees.github.io/soft-world-magazine-collection/mntx.html) | 2002 | 2 | archive.org |
 | [《电脑迷》](https://lychees.github.io/soft-world-magazine-collection/pcfan.html) | 2011 | 24 | archive.org |
 | [《口袋迷》](https://lychees.github.io/soft-world-magazine-collection/koudaimi.html) | — | 9 | archive.org（非全刊） |
 
-共 **2,850 册**，绝大多数提供在线阅读（119 册无衍生档仅提供下载）。
+共 **2,881 册**，绝大多数提供在线阅读（119 册无衍生档仅提供下载）。
 
 ## 《軟體世界》馆藏说明
 

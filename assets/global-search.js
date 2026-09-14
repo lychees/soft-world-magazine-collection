@@ -18,6 +18,8 @@
     { key: "pcfan", label: "电脑迷", data: "data/pcfan.json", covers: "covers-pcfan/", reader: function (id) { return "ia-reader.html?col=pcfan&id=" + encodeURIComponent(id); } },
     { key: "dnb", label: "电脑报", data: "data/dnb.json", covers: "covers-dnb/", reader: function (id) { return "ia-reader.html?col=dnb&id=" + encodeURIComponent(id); } },
     { key: "dnly", label: "电脑乐园游戏攻略", data: "data/dnly.json", covers: "covers-dnly/", reader: function (id) { return "ia-reader.html?col=dnly&id=" + encodeURIComponent(id); } },
+    { key: "dngi", label: "电脑乐园·游戏情报", data: "data/dngi.json", covers: "covers-dngi/", reader: function (id) { return "ia-reader.html?col=dngi&id=" + encodeURIComponent(id); } },
+    { key: "dnapp", label: "电脑乐园·APP评测", data: "data/dnapp.json", covers: "covers-dnapp/", reader: function (id) { return "ia-reader.html?col=dnapp&id=" + encodeURIComponent(id); } },
     { key: "mntx", label: "模拟天下", data: "data/mntx.json", covers: "covers-mntx/", reader: function (id) { return "ia-reader.html?col=mntx&id=" + encodeURIComponent(id); } }
   ];
 
