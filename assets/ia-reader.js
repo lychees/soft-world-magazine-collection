@@ -51,7 +51,13 @@
     mic: { label: "微型计算机", data: "data/mic.json", back: "mic.html",
       iaPage: "https://archive.org/details/mic2008-2011" },
     pcfan: { label: "电脑迷", data: "data/pcfan.json", back: "pcfan.html",
-      iaPage: "https://archive.org/details/201101-a" }
+      iaPage: "https://archive.org/details/201101-a" },
+    dnb: { label: "电脑报", data: "data/dnb.json", back: "dnb.html",
+      iaPage: "https://archive.org/details/popular-computer-weekly" },
+    dnly: { label: "电脑乐园游戏攻略", data: "data/dnly.json", back: "dnly.html",
+      iaPage: "https://archive.org/details/dnly-yxgl_magazine_zh" },
+    mntx: { label: "模拟天下", data: "data/mntx.json", back: "mntx.html",
+      iaPage: "https://archive.org/details/20220106_20220106_2035" }
   };
 
   var col = null, item = null, colKey = null;

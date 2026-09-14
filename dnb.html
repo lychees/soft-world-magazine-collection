@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>《电脑报》文献资料 · 2012–2021 · 《軟體世界》杂志文献资料库</title>
+<meta name="description" content="《电脑报》文献资料整理与下载：2012–2021 年共 453 册，由 archive.org 提供文件托管。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="covers-dnb/dnb-2012-05.jpg">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="title">軟體世界</span>
+      <span class="sub">杂志文献资料库</span>
+    </a>
+    <nav class="site-nav">
+      <a href="index.html">軟體世界</a>
+      <a href="popsoft.html">大众软件</a>
+      <a href="zjimi.html">掌机迷</a>
+      <a href="koudaimi.html">口袋迷</a>
+      <a href="index.html#collections">更多馆藏</a>
+      <a href="shelf.html">书架</a>
+      <a href="stats.html">统计</a>
+      <a href="about.html">关于</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <h1>《电脑报》文献资料</h1>
+    <p class="lead">
+      《电脑报》1992 年创刊（重庆日报报业集团主办），是中国发行量最大的 IT 周报，每周一期。
+      本站整理 archive.org 收藏的 2012–2021 年共 <b>453 册</b>（2012–2018 年完整，2019–2021 年部分）。
+      受 archive.org 衍生档缺失限制，本馆藏仅提供原版下载，文件由 archive.org 托管。
+    </p>
+    <div class="stats">
+      <div class="stat"><b id="st-issues">–</b><span>馆藏册数</span></div>
+      <div class="stat"><b id="st-pages">–</b><span>总页数</span></div>
+      <div class="stat"><b id="st-size">–</b><span>文件体积</span></div>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <section class="block">
+    <h2 class="sec">简介</h2>
+    <div class="prose wiki-box">
+      <p>《电脑报》1992 年创刊，以电脑软硬件知识、IT 资讯、应用技巧与游戏娱乐内容为主，
+        每周一期，是中国最长寿、发行量最大的计算机周报。</p>
+      <p class="attribution">
+        扫描文件托管于 <a href="https://archive.org/details/popular-computer-weekly" target="_blank" rel="noopener">archive.org</a>；
+        报纸内容版权归原出版方所有，本站仅供学习研究使用。
+      </p>
+    </div>
+  </section>
+
+  <section class="block" id="catalog">
+    <h2 class="sec">馆藏目录</h2>
+    <div class="filterbar">
+      <input type="search" id="search" placeholder="搜索年份 / 期号…">
+      <span class="chip on" data-type="全部">全部</span>
+      <span class="chip" data-type="正刊">正刊</span>
+    </div>
+    <div class="yearnav" id="yearnav"></div>
+    <div id="catalog-list"><p style="color:var(--ink-soft)">目录加载中……</p></div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p>《电脑报》内容版权归原出版方所有，本站为民间收藏整理项目，仅供学习研究使用；扫描文件由 archive.org 托管。</p>
+    <p><a href="index.html">《軟體世界》馆藏</a> ·
+      <a href="https://github.com/lychees/soft-world-magazine-collection" target="_blank" rel="noopener">项目仓库</a>
+    </p>
+  </div>
+</footer>
+
+<script src="assets/favs.js"></script>
+<script src="assets/collections.js"></script>
+<script src="assets/progress.js"></script>
+<script>
+window.MAGCAT = {
+  iaId: "popular-computer-weekly",
+  data: "data/dnb.json",
+  covers: "covers-dnb/",
+  readerCol: "dnb",
+  groupOf: function (it) {
+    var y = it.year || 0;
+    return { key: "y" + y, title: y + " 年", short: String(y) };
+  }
+};
+</script>
+<script src="assets/mag-catalog.js"></script>
+</body>
+</html>
